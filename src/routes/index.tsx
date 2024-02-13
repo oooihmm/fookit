@@ -4,6 +4,7 @@ import { Suspense, lazy } from 'react';
 
 const Home = lazy(() => import('../pages/Home'));
 const RecipesPage = lazy(() => import('../pages/recipes'));
+const RecipeWritePage = lazy(() => import('../pages/recipes/write'));
 
 export default function AppRoutes() {
   return (
@@ -18,6 +19,10 @@ export default function AppRoutes() {
           <Route
             path='/recipes'
             element={<RecipesPage />}></Route>
+          <Route
+            path='/recipes/write'
+            element={<RecipeWritePage />}></Route>
+          <Route path='/recipes/:recipeNo/detail'></Route>
         </Route>
         <Route
           path='*'
