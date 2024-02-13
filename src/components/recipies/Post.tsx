@@ -6,12 +6,13 @@ import recipesHeart from '../../assets/icons/recipesHeart.png';
 const Posts = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 3px;
 
   #image {
     width: 180px;
     height: 180px;
     background-color: #f8e7c8;
+    margin-bottom: 5px;
   }
 
   #post-title {
@@ -25,15 +26,17 @@ const UserInfo = styled.div`
   flex-direction: row;
   align-items: center;
   gap: 5px;
+  margin-bottom: 3px;
 
   img {
-    width: 20px;
-    height: 20px;
+    width: 15px;
+    height: 15px;
   }
 
   p {
     margin: 0;
     font-size: 13px;
+    line-height: 3px;
   }
 `;
 
