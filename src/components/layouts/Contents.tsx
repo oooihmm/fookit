@@ -3,10 +3,8 @@ import styled from 'styled-components';
 import { Outlet } from 'react-router-dom';
 
 const ContentsWrapper = styled.div`
-  padding: 0 150px;
-  padding-bottom: 80px;
+  padding: 70px 150px 80px 150px;
   min-width: 1200px;
-  padding: 0 150px;
   height: calc(100vh - 80px);
   background-color: aliceblue;
 `;
