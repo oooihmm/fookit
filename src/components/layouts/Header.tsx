@@ -1,18 +1,17 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
-import { IconButton } from "@mui/material";
-import MenuBookIcon from "@mui/icons-material/MenuBook";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import Tooltip, { TooltipProps } from "@mui/material/Tooltip";
-import Button from "@mui/material/Button";
+import { IconButton } from '@mui/material';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import Tooltip, { TooltipProps } from '@mui/material/Tooltip';
+import Button from '@mui/material/Button';
 
-import ToolTipMypage from "../TooltipMypage";
+import ToolTipMypage from '../TooltipMypage';
 
 const DefaultHeader = styled.div`
-  width: 100vw;
-  min-width: 1500px;
+  min-width: 1200px;
   height: 80px;
   padding: 0 150px;
   margin: 0;
@@ -46,7 +45,7 @@ const NavMenu = styled.ul`
 const MenuItem = styled.div`
   cursor: pointer;
   font-size: 20px;
-  font-weight: "700";
+  font-weight: '700';
   padding: 10px;
   border-radius: 5px;
   color: #fff;
@@ -66,7 +65,10 @@ const NavIconWrapper = styled.div`
 `;
 
 const GuideTooltip = styled(({ className, ...props }: TooltipProps) => (
-  <Tooltip {...props} classes={{ popper: className }} />
+  <Tooltip
+    {...props}
+    classes={{ popper: className }}
+  />
 ))`
   .MuiTooltip-tooltip {
     background-color: #fff;
@@ -93,11 +95,11 @@ export const Header = () => {
 
   const navigate = useNavigate();
   const handleLoginClick = () => {
-    navigate("/login");
+    navigate('/login');
   };
 
   const handleTitleClick = () => {
-    navigate("/");
+    navigate('/');
   };
 
   return (
@@ -110,11 +112,13 @@ export const Header = () => {
         </NavMenu>
       </NavMainWrapper>
       <NavIconWrapper>
-        <GuideTooltip title="가이드라인" arrow>
-          <IconButton style={{ padding: "20px" }}>
+        <GuideTooltip
+          title='가이드라인'
+          arrow>
+          <IconButton style={{ padding: '20px' }}>
             <MenuBookIcon
               sx={{
-                color: "#fff",
+                color: '#fff',
                 fontSize: 40,
               }}
             />
@@ -123,15 +127,14 @@ export const Header = () => {
         {isLogin ? (
           <div onMouseLeave={() => setIsHover(false)}>
             <IconButton
-              style={{ position: "relative", padding: "20px" }}
-              onMouseEnter={() => setIsHover(true)}
-            >
+              style={{ position: 'relative', padding: '20px' }}
+              onMouseEnter={() => setIsHover(true)}>
               <AccountCircleIcon
                 sx={{
-                  color: "#fff",
+                  color: '#fff',
                   fontSize: 40,
-                  backgroundColor: "#ffc960",
-                  borderRadius: "50%",
+                  backgroundColor: '#ffc960',
+                  borderRadius: '50%',
                 }}
               />
             </IconButton>
@@ -141,16 +144,15 @@ export const Header = () => {
           <Button
             onClick={handleLoginClick}
             style={{
-              width: "100px",
-              height: "50px",
+              width: '100px',
+              height: '50px',
               borderRadius: 20,
-              backgroundColor: "#fff",
-              color: "#2b1b09",
-              fontSize: "20px",
-              fontWeight: "700",
+              backgroundColor: '#fff',
+              color: '#2b1b09',
+              fontSize: '20px',
+              fontWeight: '700',
             }}
-            variant="contained"
-          >
+            variant='contained'>
             로그인
           </Button>
         )}
