@@ -23,6 +23,12 @@ export default function AppRoutes() {
             path='/recipes/write'
             element={<RecipeWritePage />}></Route>
           <Route path='/recipes/:recipeNo/detail'></Route>
+          <Route path='/community'></Route>
+          <Route path='/community/write'></Route>
+          <Route path='/community/:recipeNo/detail'></Route>
+          <Route path='/login' />
+          <Route path='/signup' />
+          <Route path='/mypage' />
         </Route>
         <Route
           path='*'
