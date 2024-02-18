@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import recipesDetailProfile from '../../../assets/icons/recipesDetailProfile.png';
-import recipesSecretReply from '../../../assets/icons/recipesSecretReply.png';
+
+import Title from '../../../components/detail/Title';
+import Comment from '../../../components/detail/Comment';
 
 const Wrap = styled.div`
   min-width: 1200px;
@@ -26,19 +27,6 @@ const ContentsWrap = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
-  background-color: white;
-  border-radius: 20px;
-  gap: 30px;
-`;
-
-const ContentsHeader = styled.div`
-  min-width: 1200px;
-  max-width: 1500px;
-  padding: 30px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
 
   background-color: white;
   border-radius: 20px;
@@ -197,7 +185,7 @@ const LikeButtonContainer = styled.div`
   }
 `;
 
-const ReplyContainer = styled.div`
+const CommentContainer = styled.div`
   width: 100%;
   min-height: 500px;
   margin-bottom: 60px;
@@ -205,92 +193,6 @@ const ReplyContainer = styled.div`
   h2 {
     font-size: 30px;
     font-weight: 600;
-  }
-`;
-
-const Reply = styled.div`
-  width: 80%;
-  padding: 60px 30px 0 0;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 15px;
-
-  img {
-    width: 60px;
-    height: 60px;
-    padding: 0;
-    margin: 0;
-  }
-`;
-
-const ReReply = styled.div`
-  width: 80%;
-  padding: 60px 30px 0 60px;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 15px;
-
-  img {
-    width: 60px;
-    height: 60px;
-    padding: 0;
-    margin: 0;
-  }
-`;
-
-const SecretReply = styled.div`
-  width: 100%;
-  margin-top: 60px;
-  padding: 60px;
-  background-color: #eef0ed;
-  border-radius: 20px;
-  gap: 15px;
-
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-
-  img {
-    width: 16px;
-    height: 21px;
-    padding: 0;
-    margin: 0;
-  }
-`;
-
-const ReplyBody = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 10px;
-
-  h3 {
-    font-weight: bold;
-  }
-
-  span {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-
-    color: #b8b3ae;
-    gap: 10px;
-
-    button {
-      color: #b8b3ae;
-      background-color: white;
-      border: none;
-      box-shadow: none;
-      cursor: pointer;
-      font-size: 15px;
-    }
   }
 `;
 
@@ -319,9 +221,7 @@ const ContentsFooter = styled.div`
 const RecipeDetailPage = () => {
   return (
     <Wrap>
-      <ContentsHeader>
-        <h1>[카테고리] Title</h1>
-      </ContentsHeader>
+      <Title />
       <ContentsWrap>
         <PostInput>
           <h3>총 금액</h3>
@@ -370,61 +270,25 @@ const RecipeDetailPage = () => {
         <LikeButtonContainer>
           <button>❤︎ 좋아요 nn개</button>
         </LikeButtonContainer>
-        <ReplyContainer>
+        <CommentContainer>
           <h2>댓글</h2>
-          <Reply>
-            <img
-              src={recipesDetailProfile}
-              alt='recipesDetailProfile'
-            />
-            <ReplyBody>
-              <h3>user name</h3>
-              <p>reply body</p>
-              <span>
-                <p>2024.02.14</p>
-                <p>21:49</p>
-                <button>답글쓰기</button>
-              </span>
-            </ReplyBody>
-          </Reply>
-          <SecretReply>
-            <img
-              src={recipesSecretReply}
-              alt='recipesSecretReply'
-            />
-            <p>비밀 댓글입니다.</p>
-          </SecretReply>
-          <Reply>
-            <img
-              src={recipesDetailProfile}
-              alt='recipesDetailProfile'
-            />
-            <ReplyBody>
-              <h3>user name</h3>
-              <p>reply body</p>
-              <span>
-                <p>2024.02.14</p>
-                <p>21:49</p>
-                <button>답글쓰기</button>
-              </span>
-            </ReplyBody>
-          </Reply>
-          <ReReply>
-            <img
-              src={recipesDetailProfile}
-              alt='recipesDetailProfile'
-            />
-            <ReplyBody>
-              <h3>user name</h3>
-              <p>reply body</p>
-              <span>
-                <p>2024.02.14</p>
-                <p>21:49</p>
-                <button>답글쓰기</button>
-              </span>
-            </ReplyBody>
-          </ReReply>
-        </ReplyContainer>
+          <Comment
+            reply={false}
+            secret={false}
+          />
+          <Comment
+            reply={false}
+            secret={true}
+          />
+          <Comment
+            reply={false}
+            secret={false}
+          />
+          <Comment
+            reply={true}
+            secret={false}
+          />
+        </CommentContainer>
       </ContentsBody>
       <ContentsFooter>
         <button>글쓰기</button>
