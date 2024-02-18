@@ -8,6 +8,7 @@ const RecipeWritePage = lazy(() => import("../pages/recipes/write"));
 const Login = lazy(() => import("../pages/Login"));
 const Mypage = lazy(() => import("../pages/Mypage"));
 const SignUp = lazy(() => import("../pages/Signup"));
+const ProfileEdit = lazy(() => import("../pages/ProfileEdit"));
 
 export default function AppRoutes() {
   return (
@@ -24,6 +25,7 @@ export default function AppRoutes() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/mypage" element={<Mypage />} />
+          <Route path="/profileEdit" element={<ProfileEdit />} />
         </Route>
         <Route path="*" element={<p>Not Found</p>} />
       </Routes>

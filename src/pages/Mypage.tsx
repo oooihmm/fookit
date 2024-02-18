@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-
+import { useNavigate } from "react-router-dom";
 import { AccountCircle, Stars } from "@mui/icons-material";
 import { Button, Pagination, Stack } from "@mui/material";
 import MypagePosts from "../components/MypagePosts";
+
+type TabProps = {
+  isActive: boolean;
+};
 
 const Container = styled.div`
   padding: 50px 150px; // 1500 - 300 = 1200
@@ -59,7 +63,7 @@ const Header = styled.div`
   gap: 2rem;
 `;
 
-const StyledButton = styled(Button)`
+const StyledButton = styled(Button)<TabProps>`
   && {
     background-color: #eef0ed;
     color: black;
@@ -68,6 +72,9 @@ const StyledButton = styled(Button)`
     /* height: 50px; */
     border-radius: 20px;
     font-size: 20px;
+
+    background-color: ${(props) => (props.isActive ? "#548536" : "#eef0ed")};
+    color: ${(props) => (props.isActive ? "#fff" : "black")};
 
     &:hover {
       background-color: #548536;
@@ -103,6 +110,8 @@ interface IPost {
 }
 
 const Mypage: React.FC = () => {
+  const [activeBtn, setActiveBtn] = useState(1);
+  const navigate = useNavigate();
   const board: IPost[] = [
     {
       title: "게시글 제목입니다.",
@@ -171,9 +180,15 @@ const Mypage: React.FC = () => {
 
   const LAST_PAGE = Math.ceil(board.length / 5);
 
-  // useEffect(() => {
-  //   fetchPosts(currentPage).then((data) => setPosts(data));
-  // }, [currentPage]);
+  useEffect(() => {
+    // 작성 글
+    const fetchRecipse = async () => {
+      try {
+      } catch (err) {}
+    };
+    // if (activeBtn === 1) {
+    // }
+  }, [activeBtn]);
 
   useEffect(() => {
     const newPosts = board.slice((curPage - 1) * 5, curPage * 5);
@@ -191,6 +206,15 @@ const Mypage: React.FC = () => {
     console.log(page);
   };
 
+  const handleProfileEdit = () => {
+    navigate("/profileEdit");
+  };
+
+  const handlePostClick = (Index: number) => {
+    console.log(Index, activeBtn);
+    return () => setActiveBtn(Index);
+  };
+
   return (
     <Container>
       <Wrapper>
@@ -204,7 +228,10 @@ const Mypage: React.FC = () => {
                 borderRadius: "50%",
               }}
             />
-            <Button sx={{ fontSize: "20px", color: "#2b1b09" }}>
+            <Button
+              onClick={handleProfileEdit}
+              sx={{ fontSize: "20px", color: "#2b1b09" }}
+            >
               회원정보 수정
             </Button>
           </Account>
@@ -223,9 +250,15 @@ const Mypage: React.FC = () => {
           </HeaderText>
         </Header>
         <div>
-          <StyledButton>작성글</StyledButton>
-          <StyledButton>작성댓글</StyledButton>
-          <StyledButton>좋아요한 글</StyledButton>
+          <StyledButton isActive={activeBtn === 1} onClick={handlePostClick(1)}>
+            작성글
+          </StyledButton>
+          <StyledButton isActive={activeBtn === 2} onClick={handlePostClick(2)}>
+            작성댓글
+          </StyledButton>
+          <StyledButton isActive={activeBtn === 3} onClick={handlePostClick(3)}>
+            좋아요한 글
+          </StyledButton>
         </div>
         <MypagePosts posts={posts} />
         <Stack spacing={2}>
