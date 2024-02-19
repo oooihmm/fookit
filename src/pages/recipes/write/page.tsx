@@ -61,7 +61,7 @@ const RecipeWritePage = () => {
 
   return (
     <Wrap>
-      <h1>레시피글쓰기</h1>
+      <h1>레시피 글 쓰기</h1>
       <FormContainer onSuccess={onSubmit}>
         <TitleForm />
         <TagForm
