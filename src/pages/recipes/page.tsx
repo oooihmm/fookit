@@ -42,7 +42,6 @@ const Contents = styled.div`
   flex-wrap: wrap;
   flex-direction: row;
   justify-content: space-between;
-  gap: 60px 10%;
 `;
 
 const ContentsFooter = styled.div`
@@ -79,6 +78,8 @@ const RecipesPage = () => {
           <Post />
           <Post />
           <Post />
+        </Contents>
+        <Contents>
           <Post />
           <Post />
           <Post />
