@@ -49,7 +49,7 @@ const NavMenu = styled.ul`
 const MenuItem = styled.div`
   cursor: pointer;
   font-size: 20px;
-  font-weight: "700";
+  font-weight: 700;
   padding: 10px;
   border-radius: 5px;
   color: #fff;
