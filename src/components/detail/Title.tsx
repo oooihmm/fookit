@@ -40,7 +40,7 @@ const ProfileWrap = styled.div`
   gap: 10px;
 
   button {
-    width: 80px;
+    width: 100px;
     height: 36px;
     gap: 5px;
     color: white;
@@ -95,10 +95,20 @@ const CommentBody = styled.div`
   }
 `;
 
-const Title = () => {
+const Title = ({
+  title,
+  author,
+  createdAt,
+  views,
+}: {
+  title?: string;
+  author?: string;
+  createdAt?: string;
+  views?: number;
+}) => {
   return (
     <ContentsHeader>
-      <h1>[카테고리] Title</h1>
+      <h1>{title}</h1>
       <HeaderWrap>
         <ProfileWrap>
           <img
@@ -106,10 +116,10 @@ const Title = () => {
             alt='detailProfile'
           />
           <CommentBody>
-            <h3>user name</h3>
+            <h3>{author}</h3>
             <span>
-              <p>2024.02.14</p>
-              <p>view 000</p>
+              <p>{createdAt}</p>
+              <p>{views} views</p>
             </span>
           </CommentBody>
           <button>
@@ -117,7 +127,7 @@ const Title = () => {
               src={detailSubscribe}
               alt='detailSubscribe'
             />
-            <p>구독</p>
+            <p>subscribe</p>
           </button>
         </ProfileWrap>
         <CommentWrap>
@@ -125,7 +135,7 @@ const Title = () => {
             src={comments}
             alt='comments'
           />
-          댓글 nnn개
+          4 comments
         </CommentWrap>
       </HeaderWrap>
     </ContentsHeader>

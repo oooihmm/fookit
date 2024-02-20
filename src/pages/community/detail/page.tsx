@@ -100,7 +100,7 @@ const CommunityWritePage = () => {
   return (
     <Wrap>
       <Title />
-      <FormContainer disabled={true}>
+      <FormContainer>
         <ImageForm />
         <ContentsBody>
           <TextareaAutosizeElement

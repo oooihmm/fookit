@@ -6,7 +6,7 @@ import detailSecret from '../../assets/icons/detailSecret.png';
 
 const CommentWrap = styled.div<{ reply?: boolean }>`
   width: 100%;
-  padding: 60px 30px 0 0;
+  padding: 0 30px 30px 0;
   padding-left: ${(props) => (props.reply ? '60px' : 0)};
   display: flex;
   flex-direction: row;
@@ -19,6 +19,7 @@ const CommentWrap = styled.div<{ reply?: boolean }>`
     height: 60px;
     padding: 0;
     margin: 0;
+    margin-bottom: 10px;
   }
 `;
 
@@ -27,7 +28,7 @@ const CommentBody = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  gap: 10px;
+  gap: 5px;
 
   h3 {
     font-weight: bold;
@@ -55,7 +56,7 @@ const CommentBody = styled.div`
 
 const SecretReply = styled.div`
   width: 100%;
-  padding: 60px;
+  padding: 45px;
   background-color: #eef0ed;
   border-radius: 20px;
   gap: 15px;
@@ -70,10 +71,21 @@ const SecretReply = styled.div`
     height: 21px;
     padding: 0;
     margin: 0;
+    margin-bottom: 5px;
   }
 `;
 
-const Comment = ({ reply, secret }: { reply: boolean; secret: boolean }) => {
+const Comment = ({
+  reply,
+  secret,
+  writer,
+  body,
+}: {
+  reply: boolean;
+  secret: boolean;
+  writer?: string;
+  body?: string;
+}) => {
   return (
     <CommentWrap reply={reply}>
       <img
@@ -87,16 +99,16 @@ const Comment = ({ reply, secret }: { reply: boolean; secret: boolean }) => {
             src={detailSecret}
             alt='detailSecret'
           />
-          <p>비밀 댓글입니다.</p>
+          <p>This is a private comment.</p>
         </SecretReply>
       ) : (
         <CommentBody>
-          <h3>user name</h3>
-          <p>댓글 본문입니다.</p>
+          <h3>{writer}</h3>
+          <p>{body}</p>
           <span>
             <p>2024.02.14</p>
             <p>21:49</p>
-            <button>답글쓰기</button>
+            <button>Reply</button>
           </span>
         </CommentBody>
       )}

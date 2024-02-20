@@ -1,7 +1,7 @@
 import React, { useState, ChangeEvent, KeyboardEvent } from 'react';
 import styled from 'styled-components';
 
-import { TextFieldElement } from 'react-hook-form-mui';
+import { TextFieldElement, TextareaAutosizeElement } from 'react-hook-form-mui';
 import {
   Autocomplete,
   AutocompleteRenderGetTagProps,
@@ -101,7 +101,7 @@ const ImageBox = styled.div<{ color?: string }>`
 const Line = styled.hr`
   width: 100%;
   background: #eef0ed;
-  margin: 60px 0;
+  margin: 10px 0;
   height: 1px;
   border: 0;
 `;
@@ -129,11 +129,14 @@ const ChipList = ({ value, renderTagProps, onDelete }: ChipListProps) => {
 const TagForm = ({
   chips,
   setChips,
-  disabled,
+  readOnly,
 }: {
   chips: string[];
   setChips: React.Dispatch<React.SetStateAction<string[]>>;
-  disabled?: boolean;
+  readOnly?: boolean;
+  totalPrice?: string;
+  totalTime?: string;
+  totalKcal?: string;
 }) => {
   const { getRootProps, getInputProps, acceptedFiles, fileRejections } =
     useDropzone({
@@ -161,12 +164,12 @@ const TagForm = ({
         <p>
           {fileName}
           {fileRejections.length > 1
-            ? ` 외 ${fileRejections.length - 1} 개`
+            ? ` and ${fileRejections.length - 1} others`
             : ''}
         </p>
       );
     } else {
-      return <p>파일을 드래그하거나 클릭하여 업로드하세요.</p>;
+      return <p>Drag or click to upload your files.</p>;
     }
   };
 
@@ -207,33 +210,33 @@ const TagForm = ({
   return (
     <Wrap>
       <PostInput>
-        <h3>총 금액</h3>
+        <h3>Total Price</h3>
         <TextFieldElement
           margin={'dense'}
           label={'Total Price'}
           name={'totalPrice'}
-          disabled={disabled}
+          inputProps={{ readOnly: readOnly }}
         />
-        <h3>조리 시간</h3>
+        <h3>Total Time</h3>
         <TextFieldElement
           margin={'dense'}
           label={'Total Time'}
           name={'totalTime'}
-          disabled={disabled}
+          inputProps={{ readOnly: readOnly }}
         />
-        <h3>칼로리</h3>
+        <h3>Total Calories</h3>
         <TextFieldElement
           margin={'dense'}
           label={'Total Calories'}
           name={'totalKcal'}
-          disabled={disabled}
+          inputProps={{ readOnly: readOnly }}
         />
       </PostInput>
       <Line />
       <PostTags>
         <TagsWrap>
-          <h3>재료</h3>
-          <p>사용된 재료를 입력해주세요 (최대 10개)</p>
+          <h3>Ingredients</h3>
+          <p>Please enter the ingredients used (up to 10)</p>
         </TagsWrap>
         <Autocomplete
           clearIcon={false}
@@ -242,10 +245,10 @@ const TagForm = ({
           value={chips}
           inputValue={text}
           options={[]}
-          disabled={disabled}
+          readOnly={readOnly}
           sx={{
             width: '100%',
-            backgroundColor: '#eef0ed',
+            borderColor: 'white',
           }}
           renderInput={(params) => (
             <TextField
@@ -262,15 +265,33 @@ const TagForm = ({
             />
           )}
         />
-        <TagsWrap>{disabled ? '' : <h3>이미지 첨부</h3>}</TagsWrap>
-        <ImageBox
-          color={borderColor()}
-          {...getRootProps({
-            className: 'dropzone',
-          })}>
-          <input {...getInputProps()} />
-          {disabled ? '' : renderFileInfo()}
-        </ImageBox>
+        <Line />
+        {readOnly ? (
+          <>
+            <ImageBox color={borderColor()}></ImageBox>
+          </>
+        ) : (
+          <>
+            <TagsWrap>
+              <h3>Attach images</h3>
+            </TagsWrap>
+            <ImageBox
+              color={borderColor()}
+              {...getRootProps({
+                className: 'dropzone',
+              })}>
+              <input {...getInputProps()} />
+              {renderFileInfo()}
+            </ImageBox>
+          </>
+        )}
+        <TextareaAutosizeElement
+          name='body'
+          resizeStyle='vertical'
+          rows={readOnly ? 3 : 15}
+          sx={{ width: '100%' }}
+          inputProps={{ readOnly: readOnly }}
+        />
       </PostTags>
     </Wrap>
   );

@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Post from '../../components/recipies/Post';
 import { useNavigate } from 'react-router-dom';
+import { Recipe, useRecipes } from './hooks';
 
 const Wrap = styled.div`
   min-width: 1200px;
@@ -41,7 +42,8 @@ const Contents = styled.div`
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 4.9%;
 `;
 
 const ContentsFooter = styled.div`
@@ -67,27 +69,36 @@ const ContentsFooter = styled.div`
 
 const RecipesPage = () => {
   const navigate = useNavigate();
+  const { recipeData } = useRecipes();
+
+  const divideArrayIntoChunks = (array: Recipe[], chunkSize: number) => {
+    var result = [];
+    for (var i = 0; i < array.length; i += chunkSize) {
+      result.push(array.slice(i, i + chunkSize));
+    }
+    return result;
+  };
+
+  const divideRecipeData = divideArrayIntoChunks(recipeData, 4);
+
   return (
     <Wrap>
       <ContentsWrap>
         <ContentsHeader>
           <h1>Recipes</h1>
         </ContentsHeader>
-        <Contents>
-          <Post />
-          <Post />
-          <Post />
-          <Post />
-        </Contents>
-        <Contents>
-          <Post />
-          <Post />
-          <Post />
-          <Post />
-        </Contents>
+        {divideRecipeData.map((recipes) => {
+          return (
+            <Contents>
+              {recipes.map((recipe) => {
+                return <Post recipe={recipe} />;
+              })}
+            </Contents>
+          );
+        })}
       </ContentsWrap>
       <ContentsFooter>
-        <button onClick={() => navigate('/recipes/write')}>글쓰기</button>
+        <button onClick={() => navigate('/recipes/write')}>Write</button>
       </ContentsFooter>
     </Wrap>
   );

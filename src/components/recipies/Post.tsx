@@ -2,22 +2,24 @@ import React from 'react';
 import styled from 'styled-components';
 import recipesProfile from '../../assets/icons/recipesProfile.png';
 import recipesHeart from '../../assets/icons/recipesHeart.png';
+import { Recipe } from '../../pages/recipes/hooks';
+import { useNavigate } from 'react-router-dom';
 
 const Posts = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 5px;
 
   #image {
-    width: 180px;
-    height: 180px;
+    width: 230px;
+    height: 230px;
     background-color: #f8e7c8;
     margin-bottom: 5px;
   }
 
   #post-title {
-    font-size: 15px;
-    font-weight: 500;
+    font-size: 25px;
+    font-weight: 600;
   }
 `;
 
@@ -29,14 +31,14 @@ const UserInfo = styled.div`
   margin-bottom: 3px;
 
   img {
-    width: 15px;
-    height: 15px;
+    width: 30px;
+    height: 30px;
   }
 
   p {
     margin: 0;
-    font-size: 13px;
-    line-height: 3px;
+    font-size: 16px;
+    line-height: -3px;
   }
 `;
 
@@ -52,41 +54,43 @@ const PostInfo = styled.div`
     gap: 3px;
 
     img {
-      width: 8px;
-      height: 8px;
-    }
-
-    p {
-      line-height: 3px;
+      width: 13px;
+      height: 13px;
+      margin-bottom: 2px;
     }
   }
 
   p {
     margin: 0;
-    font-size: 10px;
+    font-size: 13px;
   }
 `;
 
-const Post = () => {
+const Post = ({ recipe }: { recipe: Recipe }) => {
+  const navigate = useNavigate();
   return (
-    <Posts>
+    <Posts onClick={() => navigate(`/recipes/${recipe.boardId}/detail`)}>
       <div id='image'></div>
-      <span id='post-title'>게시글 제목입니다</span>
+      <span id='post-title'>
+        {recipe.title.length < 17
+          ? recipe.title
+          : recipe.title.slice(0, 17) + '...'}
+      </span>
       <UserInfo>
         <img
           src={recipesProfile}
           alt='recipesProfile'
         />
-        <p>user name</p>
+        <p>{recipe.author}</p>
       </UserInfo>
       <PostInfo>
-        <p>조회수 187만</p>
+        <p>{recipe.views} views</p>
         <span id='like'>
           <img
             src={recipesHeart}
             alt='recipesHeart'
           />
-          <p>53</p>
+          <p>{recipe.likes}</p>
         </span>
       </PostInfo>
     </Posts>

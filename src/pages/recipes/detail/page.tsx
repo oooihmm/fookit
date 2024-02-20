@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { FormContainer, TextareaAutosizeElement } from 'react-hook-form-mui';
+import { FormContainer } from 'react-hook-form-mui';
 
 import Title from '../../../components/detail/Title';
 import Comment from '../../../components/detail/Comment';
 import TagForm from '../../../components/write/TagForm';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useRecipes } from '../hooks';
 
 const Wrap = styled.div`
   min-width: 1200px;
@@ -55,11 +56,12 @@ const LikeButtonContainer = styled.div`
 const CommentContainer = styled.div`
   width: 100%;
   min-height: 500px;
-  padding-bottom: 60px;
+  margin-bottom: -20px;
 
   h2 {
     font-size: 30px;
-    font-weight: 600;
+    font-weight: 400;
+    margin-bottom: 30px;
   }
 `;
 
@@ -96,52 +98,70 @@ const ContentsFooter = styled.div`
 
 const RecipesWritePage = () => {
   const navigate = useNavigate();
-  const [chips, setChips] = useState<string[]>([]);
+  const { recipeNo } = useParams();
+
+  const { recipeData } = useRecipes();
+  const detailData = recipeData.find(
+    (recipe) => recipe.boardId === Number(recipeNo)
+  );
+
+  const [chips, setChips] = useState<string[]>(detailData?.ingredients ?? []);
+
+  const recipeComments = [
+    {
+      reply: false,
+      secret: false,
+      writer: 'Olivia Bennett',
+      body: 'This recipe is a taste explosion! The flavors dance on my taste buds with every bite.',
+    },
+    {
+      reply: true,
+      secret: false,
+      writer: 'Ethan Hayes',
+      body: `Couldn't agree more! The burst of flavors in this recipe is truly a culinary delight. I also love how each ingredient plays its part in creating a symphony of taste. What's your favorite element of the dish?`,
+    },
+    {
+      reply: false,
+      secret: true,
+    },
+    {
+      reply: false,
+      secret: false,
+      writer: 'Mia Rodriguez',
+      body: `Absolutely delicious! I added a twist by incorporating a bit of [unique ingredient] – it elevated the dish even more!`,
+    },
+  ];
 
   return (
     <Wrap>
-      <Title />
-      <FormContainer>
+      <Title
+        title={`[${detailData?.category}] ${detailData?.title}`}
+        author={detailData?.author}
+        createdAt={detailData?.createdAt}
+        views={detailData?.views}
+      />
+      <FormContainer defaultValues={detailData}>
         <TagForm
           chips={chips}
           setChips={setChips}
-          disabled={true}
+          readOnly={true}
         />
         <ContentsBody>
-          <TextareaAutosizeElement
-            name='body'
-            resizeStyle='vertical'
-            rows={30}
-            sx={{ width: '100%', marginBottom: '60px' }}
-            disabled={true}
-          />
-          <LikeButtonContainer>
-            <button>❤︎ 좋아요 nn개</button>
-          </LikeButtonContainer>
-          <Line />
           <CommentContainer>
-            <h2>댓글</h2>
-            <Comment
-              reply={false}
-              secret={false}
-            />
-            <Comment
-              reply={false}
-              secret={true}
-            />
-            <Comment
-              reply={false}
-              secret={false}
-            />
-            <Comment
-              reply={true}
-              secret={false}
-            />
+            <h2>Comments</h2>
+            {recipeComments.map((comment) => (
+              <Comment
+                reply={comment.reply}
+                secret={comment.secret}
+                writer={comment.writer}
+                body={comment.body}
+              />
+            ))}
           </CommentContainer>
         </ContentsBody>
         <ContentsFooter>
-          <button onClick={() => navigate('/recipes/write')}>글쓰기</button>
-          <button onClick={() => navigate('/recipes')}>목록으로</button>
+          <button onClick={() => navigate('/recipes/write')}>Write</button>
+          <button onClick={() => navigate('/recipes')}>To List</button>
         </ContentsFooter>
       </FormContainer>
     </Wrap>

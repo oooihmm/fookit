@@ -62,23 +62,15 @@ const RecipeWritePage = () => {
 
   return (
     <Wrap>
-      <h1>레시피 글 쓰기</h1>
+      <h1>Write Recipe</h1>
       <FormContainer onSuccess={onSubmit}>
         <TitleForm />
         <TagForm
           chips={chips}
           setChips={setChips}
         />
-        <ContentsBody>
-          <TextareaAutosizeElement
-            name='body'
-            resizeStyle='vertical'
-            rows={30}
-            sx={{ width: '100%' }}
-          />
-        </ContentsBody>
         <ContentsFooter>
-          <button type='submit'>등록</button>
+          <button type='submit'>submit</button>
         </ContentsFooter>
       </FormContainer>
     </Wrap>
