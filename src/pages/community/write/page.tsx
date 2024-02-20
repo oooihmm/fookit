@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { FormContainer, TextareaAutosizeElement } from 'react-hook-form-mui';
 
-import TitleForm from '../../../components/write/TitleForm';
-import TagForm from '../../../components/write/TagForm';
+import OnlyTitleForm from '../../../components/write/OnlyTitleForm';
+import ImageForm from '../../../components/write/ImageForm';
 
 const Wrap = styled.div`
   min-width: 1200px;
@@ -53,28 +53,23 @@ const ContentsFooter = styled.div`
   }
 `;
 
-const RecipeWritePage = () => {
-  const [chips, setChips] = useState<string[]>([]);
-
+const CommunityWritePage = () => {
   const onSubmit = async (data: any) => {
-    console.log(data, chips);
+    console.log(data);
   };
 
   return (
     <Wrap>
-      <h1>레시피 글 쓰기</h1>
+      <h1>커뮤니티 글 쓰기</h1>
       <FormContainer onSuccess={onSubmit}>
-        <TitleForm />
-        <TagForm
-          chips={chips}
-          setChips={setChips}
-        />
+        <OnlyTitleForm />
+        <ImageForm />
         <ContentsBody>
           <TextareaAutosizeElement
             name='body'
             resizeStyle='vertical'
             rows={30}
-            sx={{ width: '100%' }}
+            sx={{ width: '1200px' }}
           />
         </ContentsBody>
         <ContentsFooter>
@@ -85,4 +80,4 @@ const RecipeWritePage = () => {
   );
 };
 
-export default RecipeWritePage;
+export default CommunityWritePage;

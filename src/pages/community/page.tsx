@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import Post from '../../components/recipies/Post';
 import { useNavigate } from 'react-router-dom';
+import CommunityTable from '../../components/community/CommunityTable';
 
 const Wrap = styled.div`
   min-width: 1200px;
@@ -42,6 +42,7 @@ const Contents = styled.div`
   flex-wrap: wrap;
   flex-direction: row;
   justify-content: space-between;
+  gap: 60px 10%;
 `;
 
 const ContentsFooter = styled.div`
@@ -65,32 +66,23 @@ const ContentsFooter = styled.div`
   }
 `;
 
-const RecipesPage = () => {
+const CommunityPage = () => {
   const navigate = useNavigate();
   return (
     <Wrap>
       <ContentsWrap>
         <ContentsHeader>
-          <h1>Recipes</h1>
+          <h1>Community</h1>
         </ContentsHeader>
         <Contents>
-          <Post />
-          <Post />
-          <Post />
-          <Post />
-        </Contents>
-        <Contents>
-          <Post />
-          <Post />
-          <Post />
-          <Post />
+          <CommunityTable />
         </Contents>
       </ContentsWrap>
       <ContentsFooter>
-        <button onClick={() => navigate('/recipes/write')}>글쓰기</button>
+        <button onClick={() => navigate('/community/write')}>글쓰기</button>
       </ContentsFooter>
     </Wrap>
   );
 };
 
-export default RecipesPage;
+export default CommunityPage;

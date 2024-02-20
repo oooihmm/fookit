@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { FormContainer, TextareaAutosizeElement } from 'react-hook-form-mui';
 
 import Title from '../../../components/detail/Title';
 import Comment from '../../../components/detail/Comment';
-import TagForm from '../../../components/write/TagForm';
+import ImageForm from '../../../components/write/ImageForm';
 import { useNavigate } from 'react-router-dom';
 
 const Wrap = styled.div`
@@ -94,19 +94,14 @@ const ContentsFooter = styled.div`
   }
 `;
 
-const RecipesWritePage = () => {
+const CommunityWritePage = () => {
   const navigate = useNavigate();
-  const [chips, setChips] = useState<string[]>([]);
 
   return (
     <Wrap>
       <Title />
-      <FormContainer>
-        <TagForm
-          chips={chips}
-          setChips={setChips}
-          disabled={true}
-        />
+      <FormContainer disabled={true}>
+        <ImageForm />
         <ContentsBody>
           <TextareaAutosizeElement
             name='body'
@@ -140,12 +135,14 @@ const RecipesWritePage = () => {
           </CommentContainer>
         </ContentsBody>
         <ContentsFooter>
-          <button onClick={() => navigate('/recipes/write')}>글쓰기</button>
-          <button onClick={() => navigate('/recipes')}>목록으로</button>
+          <ContentsFooter>
+            <button onClick={() => navigate('/community/write')}>글쓰기</button>
+            <button onClick={() => navigate('/community')}>목록으로</button>
+          </ContentsFooter>
         </ContentsFooter>
       </FormContainer>
     </Wrap>
   );
 };
 
-export default RecipesWritePage;
+export default CommunityWritePage;
