@@ -31,12 +31,20 @@ const TitleForm = () => {
         sx={{ width: '300px' }}
         options={[
           {
-            id: '1',
-            label: 'Label 1',
+            id: 'Healthy',
+            label: 'Healthy',
           },
           {
-            id: '2',
-            label: 'label 2',
+            id: 'Diet',
+            label: 'Diet',
+          },
+          {
+            id: 'Protein',
+            label: 'Protein',
+          },
+          {
+            id: 'World',
+            label: 'World',
           },
         ]}
       />
