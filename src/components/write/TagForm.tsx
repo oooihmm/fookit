@@ -126,9 +126,11 @@ const ChipList = ({ value, renderTagProps, onDelete }: ChipListProps) => {
 const TagForm = ({
   chips,
   setChips,
+  disabled,
 }: {
   chips: string[];
   setChips: React.Dispatch<React.SetStateAction<string[]>>;
+  disabled?: boolean;
 }) => {
   const { getRootProps, getInputProps, acceptedFiles, fileRejections } =
     useDropzone({
@@ -205,20 +207,23 @@ const TagForm = ({
         <h3>총 금액</h3>
         <TextFieldElement
           margin={'dense'}
-          label={'Price'}
-          name={'price'}
+          label={'Total Price'}
+          name={'totalPrice'}
+          disabled={disabled}
         />
         <h3>조리 시간</h3>
         <TextFieldElement
           margin={'dense'}
-          label={'Time'}
-          name={'time'}
+          label={'Total Time'}
+          name={'totalTime'}
+          disabled={disabled}
         />
         <h3>칼로리</h3>
         <TextFieldElement
           margin={'dense'}
-          label={'Calorie'}
-          name={'calorie'}
+          label={'Total Calories'}
+          name={'totalKcal'}
+          disabled={disabled}
         />
       </PostInput>
       <Line />
@@ -227,44 +232,41 @@ const TagForm = ({
           <h3>재료</h3>
           <p>사용된 재료를 입력해주세요 (최대 10개)</p>
         </TagsWrap>
-        <TagsWrap>
-          <Autocomplete
-            clearIcon={false}
-            freeSolo
-            multiple
-            value={chips}
-            inputValue={text}
-            options={[]}
-            sx={{
-              width: '100%',
-              backgroundColor: '#eef0ed',
-            }}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                onChange={handleTextChange}
-                onKeyDown={handleKeyDown}
-              />
-            )}
-            renderTags={(value, props) => (
-              <ChipList
-                value={value}
-                renderTagProps={props}
-                onDelete={handleDeleteChips}
-              />
-            )}
-          />
-        </TagsWrap>
-        <TagsWrap>
-          <h3>이미지 첨부</h3>
-        </TagsWrap>
+        <Autocomplete
+          clearIcon={false}
+          freeSolo
+          multiple
+          value={chips}
+          inputValue={text}
+          options={[]}
+          disabled={disabled}
+          sx={{
+            width: '100%',
+            backgroundColor: '#eef0ed',
+          }}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              onChange={handleTextChange}
+              onKeyDown={handleKeyDown}
+            />
+          )}
+          renderTags={(value, props) => (
+            <ChipList
+              value={value}
+              renderTagProps={props}
+              onDelete={handleDeleteChips}
+            />
+          )}
+        />
+        <TagsWrap>{disabled ? '' : <h3>이미지 첨부</h3>}</TagsWrap>
         <ImageBox
           color={borderColor()}
           {...getRootProps({
             className: 'dropzone',
           })}>
           <input {...getInputProps()} />
-          {renderFileInfo()}
+          {disabled ? '' : renderFileInfo()}
         </ImageBox>
       </PostTags>
     </Wrap>
