@@ -12,6 +12,7 @@ const CommunityWritePage = lazy(() => import('../pages/community/write'));
 const Login = lazy(() => import('../pages/Login'));
 const Mypage = lazy(() => import('../pages/Mypage'));
 const SignUp = lazy(() => import('../pages/Signup'));
+const ProfileEdit = lazy(() => import('../pages/ProfileEdit'));
 
 export default function AppRoutes() {
   return (
@@ -52,6 +53,14 @@ export default function AppRoutes() {
           <Route
             path='/mypage'
             element={<Mypage />}
+          />
+          <Route
+            path='/mypage'
+            element={<Mypage />}
+          />
+          <Route
+            path='/profileEdit'
+            element={<ProfileEdit />}
           />
         </Route>
         <Route
