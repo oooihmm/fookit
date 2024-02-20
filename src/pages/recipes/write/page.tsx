@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { FormContainer } from 'react-hook-form-mui';
+import { FormContainer, TextareaAutosizeElement } from 'react-hook-form-mui';
 
 import TitleForm from '../../../components/write/TitleForm';
 import TagForm from '../../../components/write/TagForm';
@@ -38,6 +38,7 @@ const ContentsFooter = styled.div`
   display: flex;
   justify-content: flex-end;
   padding-bottom: 90px;
+  margin-top: 30px;
 
   button {
     width: 100px;
@@ -68,7 +69,14 @@ const RecipeWritePage = () => {
           chips={chips}
           setChips={setChips}
         />
-        <ContentsBody>본문</ContentsBody>
+        <ContentsBody>
+          <TextareaAutosizeElement
+            name='body'
+            resizeStyle='vertical'
+            rows={30}
+            sx={{ width: '100%' }}
+          />
+        </ContentsBody>
         <ContentsFooter>
           <button type='submit'>등록</button>
         </ContentsFooter>
