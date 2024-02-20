@@ -33,26 +33,6 @@ const ContentsBody = styled.div`
   gap: 30px;
 `;
 
-const LikeButtonContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  button {
-    width: 180px;
-    height: 50px;
-    color: white;
-    font-size: 18px;
-    background-color: #548536;
-    border-radius: 20px;
-    border: none;
-    font-size: 18px;
-    box-shadow: none;
-    cursor: pointer;
-  }
-`;
-
 const CommentContainer = styled.div`
   width: 100%;
   min-height: 500px;
@@ -63,14 +43,6 @@ const CommentContainer = styled.div`
     font-weight: 400;
     margin-bottom: 30px;
   }
-`;
-
-const Line = styled.hr`
-  width: 100%;
-  background: #eef0ed;
-  margin: 60px 0;
-  height: 1px;
-  border: 0;
 `;
 
 const ContentsFooter = styled.div`
@@ -98,8 +70,8 @@ const ContentsFooter = styled.div`
 
 const RecipesWritePage = () => {
   const navigate = useNavigate();
-  const { recipeNo } = useParams();
 
+  const { recipeNo } = useParams();
   const { recipeData } = useRecipes();
   const detailData = recipeData.find(
     (recipe) => recipe.boardId === Number(recipeNo)
