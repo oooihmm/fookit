@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { AccountCircle, Home, Logout } from "@mui/icons-material";
+import { useDispatch } from "react-redux";
+import { logout } from "../store/login/action";
 
 const TooltipContainer = styled.div<ToolTipMypageProps>`
   position: absolute;
@@ -13,6 +15,7 @@ const TooltipContainer = styled.div<ToolTipMypageProps>`
   transition: opacity 0.3s ease 0s, transform 0.3s ease 0s;
   pointer-events: all;
   visibility: hidden;
+  z-index: 99999;
 
   ${(props) =>
     props.isHover &&
@@ -22,7 +25,7 @@ const TooltipContainer = styled.div<ToolTipMypageProps>`
     transition: 0.25s all ease;
     transition-delay: 0s;
     transform: translateY(8px) scale(1);
-  `}
+  `};
 `;
 
 const TooltipContent = styled.div`
@@ -97,9 +100,19 @@ interface ToolTipMypageProps {
 
 const ToolTipMypage: React.FC<ToolTipMypageProps> = ({ isHover }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const handleMypageBtnClick = () => {
     navigate("/mypage");
   };
+
+  const handleLogout = () => {
+    localStorage.removeItem("isLoggedIn");
+    dispatch(logout());
+    navigate("/");
+  };
+
+  const nickname = localStorage.getItem("nickname");
 
   return (
     <TooltipContainer isHover={isHover}>
@@ -114,13 +127,13 @@ const ToolTipMypage: React.FC<ToolTipMypageProps> = ({ isHover }) => {
               borderRadius: "50%",
             }}
           />
-          <ProfileName>오하람님</ProfileName>
+          <ProfileName>{nickname}</ProfileName>
           <TooltipBtnWrapper>
             <TooltipBtn onClick={handleMypageBtnClick}>
               <Home sx={{ fontSize: 30 }} />
               <TextMyPage>마이페이지</TextMyPage>
             </TooltipBtn>
-            <TooltipBtn>
+            <TooltipBtn onClick={handleLogout}>
               <Logout sx={{ fontSize: 30 }} />
               <TextMyPage>로그아웃</TextMyPage>
             </TooltipBtn>

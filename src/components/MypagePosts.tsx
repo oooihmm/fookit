@@ -2,10 +2,11 @@ import React from "react";
 import styled from "styled-components";
 
 interface IPost {
-  title: string;
+  recipeId: number;
   author: string;
-  date: string;
-  views: number;
+  title: string;
+  time: string;
+  view: number;
 }
 
 interface IPostListProps {
@@ -54,8 +55,8 @@ const PostList: React.FC<IPostListProps> = ({ posts }) => {
                 {post.title}
               </PostTableCell>
               <PostTableCell>{post.author}</PostTableCell>
-              <PostTableCell>{post.date}</PostTableCell>
-              <PostTableCell>{post.views}</PostTableCell>
+              <PostTableCell>{post.time}</PostTableCell>
+              <PostTableCell>{post.view}</PostTableCell>
             </PostTableRow>
           ))}
       </tbody>

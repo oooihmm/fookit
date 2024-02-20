@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { AccountCircle, Stars } from "@mui/icons-material";
 import { Button, Pagination, Stack } from "@mui/material";
 import MypagePosts from "../components/MypagePosts";
+import axios from "axios";
 
 type TabProps = {
   isActive: boolean;
@@ -103,102 +104,164 @@ const PointText = styled.div`
   font-size: 40px;
 `;
 
+const StyledPagination = styled(Pagination)`
+  display: flex;
+  justify-content: center;
+`;
+
 interface IPost {
-  title: string;
+  recipeId: number;
   author: string;
-  date: string;
-  views: number;
+  title: string;
+  time: string;
+  view: number;
 }
 
 const Mypage: React.FC = () => {
+  const nickname = localStorage.getItem("nickname");
+  const userId = Number(localStorage.getItem("userId"));
+
   const [activeBtn, setActiveBtn] = useState(1);
   const navigate = useNavigate();
-  const board: IPost[] = [
-    {
-      title: "게시글 제목입니다.",
-      author: "김철수",
-      date: "2024.02.01",
-      views: 0,
-    },
-    {
-      title: "게시글 제목입니다.",
-      author: "김철수",
-      date: "2024.02.02",
-      views: 0,
-    },
-    {
-      title: "게시글 제목입니다.",
-      author: "김철수",
-      date: "2024.02.03",
-      views: 0,
-    },
-    {
-      title: "게시글 제목입니다.",
-      author: "김철수",
-      date: "2024.02.04",
-      views: 0,
-    },
-    {
-      title: "게시글 제목입니다.",
-      author: "김철수",
-      date: "2024.02.05",
-      views: 0,
-    },
-    {
-      title: "게시글 제목입니다.",
-      author: "김철수",
-      date: "2024.02.06",
-      views: 0,
-    },
-    {
-      title: "게시글 제목입니다.",
-      author: "김철수",
-      date: "2024.02.07",
-      views: 0,
-    },
-    {
-      title: "게시글 제목입니다.",
-      author: "김철수",
-      date: "2024.02.08",
-      views: 0,
-    },
-    {
-      title: "게시글 제목입니다.",
-      author: "김철수",
-      date: "2024.02.09",
-      views: 0,
-    },
-    {
-      title: "게시글 제목입니다.",
-      author: "김철수",
-      date: "2024.02.10",
-      views: 0,
-    },
-  ];
+  // const board: IPost[] = [
+  //   {
+  //     recipeId: 1,
+  //     title: "게시글 제목입니다.",
+  //     author: "김철수",
+  //     time: "2024.02.01",
+  //     view: 0,
+  //   },
+  //   {
+  //     recipeId: 2,
+  //     title: "게시글 제목입니다.",
+  //     author: "김철수",
+  //     time: "2024.02.02",
+  //     view: 0,
+  //   },
+  //   {
+  //     recipeId: 3,
+  //     title: "게시글 제목입니다.",
+  //     author: "김철수",
+  //     time: "2024.02.03",
+  //     view: 0,
+  //   },
+  //   {
+  //     recipeId: 4,
+  //     title: "게시글 제목입니다.",
+  //     author: "김철수",
+  //     time: "2024.02.04",
+  //     view: 0,
+  //   },
+  //   {
+  //     recipeId: 5,
+  //     title: "게시글 제목입니다.",
+  //     author: "김철수",
+  //     time: "2024.02.05",
+  //     view: 0,
+  //   },
+  //   {
+  //     recipeId: 6,
+  //     title: "게시글 제목입니다.",
+  //     author: "김철수",
+  //     time: "2024.02.06",
+  //     view: 0,
+  //   },
+  //   {
+  //     recipeId: 7,
+  //     title: "게시글 제목입니다.",
+  //     author: "김철수",
+  //     time: "2024.02.07",
+  //     view: 0,
+  //   },
+  //   {
+  //     recipeId: 8,
+  //     title: "게시글 제목입니다.",
+  //     author: "김철수",
+  //     time: "2024.02.08",
+  //     view: 0,
+  //   },
+  //   {
+  //     recipeId: 9,
+  //     title: "게시글 제목입니다.",
+  //     author: "김철수",
+  //     time: "2024.02.09",
+  //     view: 0,
+  //   },
+  //   {
+  //     recipeId: 10,
+  //     title: "게시글 제목입니다.",
+  //     author: "김철수",
+  //     time: "2024.02.10",
+  //     view: 0,
+  //   },
+  // ];
+
+  const [board, setBoard] = useState<IPost[]>([]);
 
   const [curPage, setCurPage] = useState<number>(1);
   const [posts, setPosts] = useState<IPost[]>();
 
   const LAST_PAGE = Math.ceil(board.length / 5);
 
-  // useEffect(() => {
-  //   fetchPosts(currentPage).then((data) => setPosts(data));
-  // }, [currentPage]);
-
   useEffect(() => {
+    // let id = 0;
+
     // 작성 글
-    const fetchRecipse = async () => {
+    const fetchRecipes = async () => {
+      // let id = 1;
+
       try {
-      } catch (err) {}
+        const response = await axios.get(
+          `https://trailfinder.kro.kr/api/v1/recipe/member/${userId}`
+        );
+        setBoard(response.data.data);
+        // console.log(response.data.data);
+      } catch (err) {
+        console.log(err);
+      }
     };
-    // if (activeBtn === 1) {
-    // }
+    // 작성 댓글
+    const fetchComments = async () => {
+      // let id = 6;
+
+      try {
+        const response = await axios.get(
+          `https://trailfinder.kro.kr/api/v1/comment/profile/${userId}`
+        );
+        setBoard(response.data.data);
+        // console.log(response.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    // 작성 글
+    const fetchBookmark = async () => {
+      // let id = 1;
+
+      try {
+        const response = await axios.post(
+          `https://trailfinder.kro.kr/api/v1/bookmark/recipes/likes/${userId}?id=${userId}`
+        );
+        setBoard(response.data.data);
+        // console.log(response.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    if (activeBtn === 1) {
+      fetchRecipes();
+    } else if (activeBtn === 2) {
+      fetchComments();
+    } else if (activeBtn === 3) {
+      fetchBookmark();
+    }
   }, [activeBtn]);
 
   useEffect(() => {
     const newPosts = board.slice((curPage - 1) * 5, curPage * 5);
     setPosts(newPosts);
-  }, []);
+  }, [board]);
 
   const handlePageChange = (
     e: React.ChangeEvent<unknown>,
@@ -216,7 +279,7 @@ const Mypage: React.FC = () => {
   };
 
   const handlePostClick = (Index: number) => {
-    console.log(Index, activeBtn);
+    // console.log(Index, activeBtn);
     return () => setActiveBtn(Index);
   };
 
@@ -235,13 +298,26 @@ const Mypage: React.FC = () => {
             />
             <Button
               onClick={handleProfileEdit}
-              sx={{ fontSize: "20px", color: "#2b1b09" }}
+              sx={{
+                fontSize: "20px",
+                color: "#2b1b09",
+                backgroundColor: "#eef0ed",
+                borderRadius: "20px",
+                padding: "8px 10px",
+                width: "150px",
+                mt: "21px",
+
+                "&:hover": {
+                  backgroundColor: "#548536",
+                  color: "#fff",
+                },
+              }}
             >
               회원정보 수정
             </Button>
           </Account>
           <HeaderText>
-            <ProfileName>오하람님</ProfileName>
+            <ProfileName>{nickname}</ProfileName>
             <PointInfo>
               <Stars
                 sx={{
@@ -267,7 +343,7 @@ const Mypage: React.FC = () => {
         </div>
         <MypagePosts posts={posts} />
         <Stack spacing={2}>
-          <Pagination
+          <StyledPagination
             page={curPage}
             count={LAST_PAGE}
             defaultPage={1}

@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { login, setUserId } from "../store/login/action";
 import { Box, TextField, Button } from "@mui/material";
 
 const Container = styled.div`
@@ -31,13 +34,77 @@ const Title = styled.h1`
 `;
 
 const Login = () => {
-  const [username, setUsername] = useState("");
+  const dispatch = useDispatch();
+  const [memberId, setMemberId] = useState("");
+  const [memberError, setMemberError] = useState(false);
   const [password, setPassword] = useState("");
+  const [pwdError, setPwdError] = useState(false);
+  const [loginUserId, setLoginUserId] = useState<number>(5);
 
-  const handleSubmit = (event: React.SyntheticEvent) => {
-    event.preventDefault();
-    console.log("Username:", username);
+  const handleSubmit = async (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    console.log("memberId:", memberId);
     console.log("Password:", password);
+
+    setMemberError(false);
+    setPwdError(false);
+
+    let hasError = false;
+
+    if (memberId === "") {
+      setMemberError(true);
+      hasError = true;
+    }
+    if (password === "") {
+      setPwdError(true);
+      hasError = true;
+    }
+    if (!hasError) {
+      try {
+        const response = await axios.post(
+          "https://trailfinder.kro.kr/api/v1/login",
+          {
+            member_id: memberId,
+            password: password,
+          }
+        );
+        console.log(response);
+        localStorage.clear();
+
+        localStorage.setItem("isLoggedIn", String(true));
+        dispatch(login());
+
+        localStorage.setItem("userId", String(loginUserId));
+        dispatch(setUserId(loginUserId));
+
+        fetchUserData();
+
+        navigate("/");
+      } catch (err) {
+        if (axios.isAxiosError(err)) {
+          console.log(err.response);
+          if (err.response?.status === 400) {
+            alert("계정이 존재하지 않습니다.");
+          } else {
+            console.log("login error", err);
+          }
+        }
+      }
+    }
+  };
+
+  const fetchUserData = async () => {
+    try {
+      const response = await axios.get(
+        `https://trailfinder.kro.kr/api/v1/information/${loginUserId}`
+      );
+
+      localStorage.setItem("nickname", response.data.body.nickname);
+
+      // console.log(response.data.body.nickname);
+    } catch (err) {
+      console.log("fetchUserData error ", err);
+    }
   };
 
   const navigate = useNavigate();
@@ -78,8 +145,10 @@ const Login = () => {
                 variant="outlined"
                 fullWidth
                 margin="normal"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                value={memberId}
+                onChange={(e) => setMemberId(e.target.value)}
+                error={memberError}
+                helperText={memberError && "아이디를 입력해주세요"}
               />
               <TextField
                 label="비밀번호"
@@ -89,6 +158,8 @@ const Login = () => {
                 margin="normal"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                error={pwdError}
+                helperText={pwdError && "비밀번호를  입력해주세요"}
               />
               <Button
                 variant="contained"
