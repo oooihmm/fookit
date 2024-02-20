@@ -6,6 +6,7 @@ const Home = lazy(() => import('../pages/Home'));
 const RecipesPage = lazy(() => import('../pages/recipes'));
 const RecipeDetailPage = lazy(() => import('../pages/recipes/detail'));
 const RecipeWritePage = lazy(() => import('../pages/recipes/write'));
+const CommunityPage = lazy(() => import('../pages/community'));
 const CommunityDetailPage = lazy(() => import('../pages/community/detail'));
 const CommunityWritePage = lazy(() => import('../pages/community/write'));
 const Login = lazy(() => import('../pages/Login'));
@@ -31,7 +32,9 @@ export default function AppRoutes() {
           <Route
             path='/recipes/:recipeNo/detail'
             element={<RecipeDetailPage />}></Route>
-          <Route path='/community'></Route>
+          <Route
+            path='/community'
+            element={<CommunityPage />}></Route>
           <Route
             path='/community/write'
             element={<CommunityWritePage />}></Route>
