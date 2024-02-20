@@ -1,14 +1,18 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../../store/store";
+import { login, setUserId } from "../../store/login/action";
+import axios from "axios";
 
-import { IconButton } from '@mui/material';
-import MenuBookIcon from '@mui/icons-material/MenuBook';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import Tooltip, { TooltipProps } from '@mui/material/Tooltip';
-import Button from '@mui/material/Button';
+import { IconButton } from "@mui/material";
+import MenuBookIcon from "@mui/icons-material/MenuBook";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import Tooltip, { TooltipProps } from "@mui/material/Tooltip";
+import Button from "@mui/material/Button";
 
-import ToolTipMypage from '../TooltipMypage';
+import ToolTipMypage from "../TooltipMypage";
 
 const DefaultHeader = styled.div`
   min-width: 1200px;
@@ -45,7 +49,7 @@ const NavMenu = styled.ul`
 const MenuItem = styled.div`
   cursor: pointer;
   font-size: 20px;
-  font-weight: '700';
+  font-weight: "700";
   padding: 10px;
   border-radius: 5px;
   color: #fff;
@@ -65,10 +69,7 @@ const NavIconWrapper = styled.div`
 `;
 
 const GuideTooltip = styled(({ className, ...props }: TooltipProps) => (
-  <Tooltip
-    {...props}
-    classes={{ popper: className }}
-  />
+  <Tooltip {...props} classes={{ popper: className }} />
 ))`
   .MuiTooltip-tooltip {
     background-color: #fff;
@@ -89,36 +90,49 @@ const GuideTooltip = styled(({ className, ...props }: TooltipProps) => (
 `;
 
 export const Header = () => {
-  const [activeMenuItem, setActiveMenuItem] = useState(0);
   const [isHover, setIsHover] = useState<boolean>(false);
-  const [isLogin, setIsLogin] = useState<boolean>(false);
+  const isLogin = useSelector((state: RootState) => state.login.isLoggedIn);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const handleLoginClick = () => {
-    navigate('/login');
+    navigate("/login");
   };
 
   const handleTitleClick = () => {
-    navigate('/');
+    navigate("/");
   };
+
+  const handleGuideClick = () => {
+    navigate("/guideline");
+  };
+
+  useEffect(() => {
+    const loggedIn = localStorage.getItem("isLoggedIn");
+    const userId = Number(localStorage.getItem("userId"));
+
+    if (loggedIn === "true") {
+      dispatch(login());
+      dispatch(setUserId(userId));
+    }
+  }, [dispatch]);
 
   return (
     <DefaultHeader>
       <NavMainWrapper>
         <NavTitle onClick={handleTitleClick}>FOOKIT</NavTitle>
         <NavMenu>
-          <MenuItem>레시피</MenuItem>
-          <MenuItem>커뮤니티</MenuItem>
+          <MenuItem>Recipe</MenuItem>
+          <MenuItem>Community</MenuItem>
         </NavMenu>
       </NavMainWrapper>
       <NavIconWrapper>
-        <GuideTooltip
-          title='가이드라인'
-          arrow>
-          <IconButton style={{ padding: '20px' }}>
+        <GuideTooltip title="가이드라인" arrow>
+          <IconButton style={{ padding: "20px" }} onClick={handleGuideClick}>
             <MenuBookIcon
               sx={{
-                color: '#fff',
+                color: "#fff",
                 fontSize: 40,
               }}
             />
@@ -127,14 +141,15 @@ export const Header = () => {
         {isLogin ? (
           <div onMouseLeave={() => setIsHover(false)}>
             <IconButton
-              style={{ position: 'relative', padding: '20px' }}
-              onMouseEnter={() => setIsHover(true)}>
+              style={{ position: "relative", padding: "20px" }}
+              onMouseEnter={() => setIsHover(true)}
+            >
               <AccountCircleIcon
                 sx={{
-                  color: '#fff',
+                  color: "#fff",
                   fontSize: 40,
-                  backgroundColor: '#ffc960',
-                  borderRadius: '50%',
+                  backgroundColor: "#ffc960",
+                  borderRadius: "50%",
                 }}
               />
             </IconButton>
@@ -144,15 +159,16 @@ export const Header = () => {
           <Button
             onClick={handleLoginClick}
             style={{
-              width: '100px',
-              height: '50px',
+              width: "100px",
+              height: "50px",
               borderRadius: 20,
-              backgroundColor: '#fff',
-              color: '#2b1b09',
-              fontSize: '20px',
-              fontWeight: '700',
+              backgroundColor: "#fff",
+              color: "#2b1b09",
+              fontSize: "20px",
+              fontWeight: "700",
             }}
-            variant='contained'>
+            variant="contained"
+          >
             로그인
           </Button>
         )}

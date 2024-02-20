@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import HomeRecipeCard from "../components/HomeRecipeCard";
-
 import { LocalFireDepartment, EmojiObjectsOutlined } from "@mui/icons-material";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
+import HomeRecipeCard from "../components/HomeRecipeCard";
 
 const HomePageContainer = styled.div`
   padding: 50px 150px; // 1500 - 300 = 1200
@@ -57,6 +59,8 @@ const Post = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-evenly;
+
+  cursor: pointer;
 `;
 
 const PostTitle = styled.div`
@@ -84,15 +88,112 @@ const CommunityWrapper = styled.div`
   gap: 1.5rem;
 `;
 
+interface IRecipe {
+  boardId: number;
+  author: string;
+  title: string;
+  body: string;
+  imgUrl: string | null;
+  views: number;
+  likes: number;
+  totalTime: number;
+  totalKcal: number;
+  totalPrice: number;
+  category: string;
+  createdAt: string;
+  ingredients: string[];
+  comments: string[] | null;
+}
+
+interface IMember {
+  createdAt: string;
+  updatedAt: string;
+  userId: number;
+  memberId: string;
+  password: string;
+  nickname: string;
+  e_mail: string;
+  belong: string;
+  region: string;
+  reward: number;
+  followings: [];
+  followers: [];
+  status: string;
+}
+
+interface ICommunity {
+  title: string;
+  member: IMember;
+  boardId: number;
+  createdDate: string;
+  likes: number;
+}
+
 const Home = () => {
+  const [recipes, setRecipes] = useState<IRecipe[]>([]);
+  const [topCommunity, setTopCommunity] = useState<ICommunity[]>([]);
+  const [newCommunity, setNewCommunity] = useState<ICommunity[]>([]);
+
+  useEffect(() => {
+    const fetchRecipes = async () => {
+      try {
+        const response = await axios.get(
+          "https://trailfinder.kro.kr/api/v1/recipe/recipes"
+        );
+        const sortedRecipes = response.data.data.sort(
+          (a: IRecipe, b: IRecipe) => b.likes - a.likes
+        );
+        const slicedRecipes = sortedRecipes.slice(0, 5);
+        setRecipes(slicedRecipes);
+        // console.log(slicedRecipes);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    const fetchCommunity = async () => {
+      try {
+        const response = await axios.get(
+          "https://trailfinder.kro.kr/api/v1/community"
+        );
+        const sortedTopCommunity = response.data.data.sort(
+          (a: ICommunity, b: ICommunity) => b.likes - a.likes
+        );
+        const slicedTopCommunity = sortedTopCommunity.slice(0, 4);
+        setTopCommunity(slicedTopCommunity);
+
+        const sortedNewCommunity = response.data.data.sort(
+          (a: ICommunity, b: ICommunity) => {
+            const dateA = new Date(a.createdDate);
+            const dateB = new Date(b.createdDate);
+
+            return dateB.getTime() - dateA.getTime();
+          }
+        );
+        const slicedNewCommunity = sortedNewCommunity.slice(0, 4);
+        setNewCommunity(slicedNewCommunity);
+
+        // console.log(slicedNewCommunity);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    fetchRecipes();
+    fetchCommunity();
+  }, []);
+
+  const navigate = useNavigate();
+
   return (
     <HomePageContainer>
       <HomePageWrapper>
         <HomeTitle>Recipes</HomeTitle>
         <RecipeCardWrapper>
-          {[...Array(5)].map((_, index) => (
-            <HomeRecipeCard key={index} />
-          ))}
+          {recipes &&
+            recipes.map((recipe, index) => (
+              <HomeRecipeCard key={index} recipe={recipe} idx={index} />
+            ))}
         </RecipeCardWrapper>
         <HomeTitle>Community</HomeTitle>
         <CommunityWrapper>
@@ -106,14 +207,24 @@ const Home = () => {
               <CommunityTitle>Top Posts</CommunityTitle>
             </CommunityTitleWrapper>
             <CommunityPostsWrapper>
-              {[...Array(4)].map((_, index) => (
-                <Post key={index}>
-                  <PostTitle>Title</PostTitle>
-                  <div>writer</div>
-                  <div>|</div>
-                  <div>2024.01.28</div>
-                </Post>
-              ))}
+              {topCommunity &&
+                topCommunity.map((post, index) => {
+                  const dateStr = post.createdDate;
+                  const result = dateStr.substring(0, 10).replace(/-/g, ".");
+
+                  const handlePostClick = () => {
+                    navigate(`/community/${post.boardId}/detail`);
+                  };
+
+                  return (
+                    <Post key={index} onClick={handlePostClick}>
+                      <PostTitle>{post.title}</PostTitle>
+                      <div>{post.member.nickname}</div>
+                      <div>|</div>
+                      <div>{result}</div>
+                    </Post>
+                  );
+                })}
             </CommunityPostsWrapper>
           </CommunityContents>
           <CommunityContents>
@@ -126,14 +237,24 @@ const Home = () => {
               <CommunityTitle>New Posts</CommunityTitle>
             </CommunityTitleWrapper>
             <CommunityPostsWrapper>
-              {[...Array(4)].map((_, index) => (
-                <Post key={index}>
-                  <PostTitle>Title</PostTitle>
-                  <div>writer</div>
-                  <div>|</div>
-                  <div>2024.01.28</div>
-                </Post>
-              ))}
+              {newCommunity &&
+                newCommunity.map((post, index) => {
+                  const dateStr = post.createdDate;
+                  const result = dateStr.substring(0, 10).replace(/-/g, ".");
+
+                  const handlePostClick = () => {
+                    navigate(`/community/${post.boardId}/detail`);
+                  };
+
+                  return (
+                    <Post key={index} onClick={handlePostClick}>
+                      <PostTitle>{post.title}</PostTitle>
+                      <div>{post.member.nickname}</div>
+                      <div>|</div>
+                      <div>{result}</div>
+                    </Post>
+                  );
+                })}
             </CommunityPostsWrapper>
           </CommunityContents>
         </CommunityWrapper>

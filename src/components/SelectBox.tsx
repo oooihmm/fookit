@@ -11,6 +11,7 @@ import axios from "axios";
 
 interface Props {
   onSelectChange: (province: string, district: string, town: string) => void;
+  selectedRegion?: string;
 }
 
 interface IaddrData {
@@ -21,7 +22,7 @@ interface IaddrData {
   y_coor: string;
 }
 
-const SelectBox: React.FC<Props> = ({ onSelectChange }) => {
+const SelectBox: React.FC<Props> = ({ onSelectChange, selectedRegion }) => {
   const [provinceAddr, setProvinceAddr] = useState<IaddrData[] | null>(null);
   const [districtAddr, setDistrictAddr] = useState<IaddrData[] | null>(null);
   const [townAddr, setTownAddr] = useState<IaddrData[] | null>(null);
@@ -60,8 +61,6 @@ const SelectBox: React.FC<Props> = ({ onSelectChange }) => {
       }
     };
 
-    // getAccessToken();
-
     if (!accessToken) {
       setIsLoading(true);
       getAccessToken();
@@ -69,47 +68,75 @@ const SelectBox: React.FC<Props> = ({ onSelectChange }) => {
     }
   }, []);
 
+  const handleAddr = async () => {
+    if (!accessToken) {
+      return;
+    }
+    if (cd != undefined && cd?.length > 5) {
+      // 읍면동 이후의 search는 없음
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+
+      const response = await axios.get(API_ADDR, {
+        params: {
+          accessToken: accessToken,
+          cd: cd,
+        },
+      });
+
+      let firstData = response.data.result[0].full_addr.split(" ");
+
+      if (firstData.length === 1) {
+        setProvinceAddr(response.data.result);
+      } else if (firstData.length === 2) {
+        setDistrictAddr(response.data.result);
+      } else if (firstData.length === 3) {
+        setTownAddr(response.data.result);
+      } else {
+        console.log("error");
+      }
+    } catch (e) {
+      console.log("getAddr error", e);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   // 토큰을 이용한 api get
   useEffect(() => {
-    const handleAddr = async () => {
-      if (!accessToken) {
-        return;
-      }
-      if (cd != undefined && cd?.length > 5) {
-        // 읍면동 이후의 search는 없음
-        return;
-      }
-
-      try {
-        setIsLoading(true);
-
-        const response = await axios.get(API_ADDR, {
-          params: {
-            accessToken: accessToken,
-            cd: cd,
-          },
-        });
-
-        let firstData = response.data.result[0].full_addr.split(" ");
-
-        if (firstData.length === 1) {
-          setProvinceAddr(response.data.result);
-        } else if (firstData.length === 2) {
-          setDistrictAddr(response.data.result);
-        } else if (firstData.length === 3) {
-          setTownAddr(response.data.result);
-        } else {
-          console.log("error");
-        }
-      } catch (e) {
-        console.log("getAddr error", e);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     handleAddr();
   }, [accessToken, cd]);
+
+  useEffect(() => {
+    if (selectedRegion) {
+      const [province, district, town] = selectedRegion.split(" ");
+
+      const provinceCd = findCd(provinceAddr, province);
+      const districtCd = findCd(districtAddr, district);
+      const townCd = findCd(townAddr, town);
+
+      setCd(townCd || districtCd || provinceCd);
+
+      if (provinceCd) setSelectedProvince(province);
+      if (districtCd) setSelectedDistrict(district);
+      if (townCd) setSelectedTown(town);
+    }
+  }, [selectedRegion, provinceAddr, districtAddr, townAddr]);
+
+  const findCd = (
+    addrData: IaddrData[] | null,
+    name: string
+  ): string | null => {
+    if (addrData) {
+      const matchedAddr = addrData.find((target) => target.addr_name === name);
+
+      return matchedAddr ? matchedAddr.cd : null;
+    }
+    return null;
+  };
 
   const handleProvinceChange = (e: SelectChangeEvent): void => {
     const province = e.target.value;

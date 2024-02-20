@@ -61,47 +61,75 @@ const RedStyled = styled.div`
 
 const ProfileEdit = () => {
   const navigate = useNavigate();
-  let userId = 4;
+  const userId = Number(localStorage.getItem("userId"));
 
-  const formData = useSelector((state: RootState) => state.profile.formData);
   const dispatch = useDispatch();
+  const userData = useSelector((state: RootState) => state.profile.formData);
 
-  // const [formData, setFormData] = useState({
-  //   memberId: "",
-  //   nickname: "",
-  //   password: "",
-  //   confirmPassword: "",
-  //   email: "",
-  //   belong: "",
-  //   region: "",
-  // });
+  const [formData, setFormData] = useState({
+    memberId: "",
+    nickname: "",
+    password: "",
+    confirmPassword: "",
+    email: "",
+    belong: "",
+    region: "",
+  });
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (userId) {
+        try {
+          const response = await axios.get(
+            `https://trailfinder.kro.kr/api/v1/information/${userId}`
+          );
+
+          dispatch(editProfile(response.data.body));
+          // console.log("fetch", response.data.body);
+        } catch (err) {
+          console.log("fetchUserData error ", err);
+        }
+      } else console.log("Not valid UserId");
+    };
+
+    fetchUserData();
+  }, [userId]);
+
+  useEffect(() => {
+    // console.log(formData, userData);
+    if (userData) {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        memberId: userData.memberId,
+        nickname: userData.nickname,
+        password: userData.password,
+        confirmPassword: "",
+        email: userData.e_mail,
+        belong: userData.belong || "",
+        region: userData.region || "",
+      }));
+    }
+  }, [userData]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
 
   const handleSelectChange = (
     province: string,
     district: string,
     town: string
   ) => {
-    dispatch(
-      editProfile({
-        ...formData,
-        region: `${province} ${district} ${town}`,
-      })
-    );
+    setFormData({
+      ...formData,
+      region: `${province} ${district} ${town}`,
+    });
   };
-
-  useEffect(() => {
-    const fetchUserInfo = async () => {
-      try {
-        const response = await axios.get("url...");
-        const userData = response.data;
-        dispatch(editProfile(userData));
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    // fetchUserInfo();
-  }, [dispatch]);
 
   const [errors, setErrors] = useState({
     memberId: "",
@@ -152,7 +180,7 @@ const ProfileEdit = () => {
     if (validateForm()) {
       try {
         const response = await axios.put(
-          `http://43.200.230.191:8080/api/v1/edit-member/${userId}`,
+          `https://trailfinder.kro.kr/api/v1/edit-member/${userId}`,
           {
             member_id: formData.memberId,
             password: formData.password,
@@ -162,8 +190,21 @@ const ProfileEdit = () => {
             region: formData.region,
           }
         );
-        console.log(response.data);
+
+        // console.log("response", response, formData);
+        dispatch(
+          editProfile({
+            ...userData,
+            memberId: formData.memberId,
+            nickname: formData.nickname,
+            e_mail: formData.email,
+            belong: formData.belong,
+            region: formData.region,
+          })
+        );
+
         alert("회원 정보가 수정되었습니다.");
+        navigate("/mypage");
       } catch (err) {
         console.log(err);
       }
@@ -174,7 +215,7 @@ const ProfileEdit = () => {
 
   const handleDelete = async (e: React.FormEvent) => {
     try {
-      await axios.put(`http://43.200.230.191:8080/api/v1/suspension/${userId}`);
+      await axios.put(`https://trailfinder.kro.kr/api/v1/suspension/${userId}`);
       alert("회원 탈퇴가 완료되었습니다.");
 
       dispatch(logout());
@@ -199,6 +240,9 @@ const ProfileEdit = () => {
                 label="아이디"
                 name="memberId"
                 value={formData.memberId}
+                onChange={handleChange}
+                error={errors.memberId !== ""}
+                helperText={errors.memberId}
                 InputProps={{
                   style: {
                     borderRadius: "10px",
@@ -216,6 +260,7 @@ const ProfileEdit = () => {
                 label="닉네임"
                 name="nickname"
                 value={formData.nickname}
+                onChange={handleChange}
                 InputProps={{
                   style: {
                     borderRadius: "10px",
@@ -233,7 +278,9 @@ const ProfileEdit = () => {
                 label="비밀번호"
                 type="password"
                 name="password"
-                // value={formData.password}
+                onChange={handleChange}
+                error={errors.password !== ""}
+                helperText={errors.password}
                 InputProps={{
                   style: {
                     borderRadius: "10px",
@@ -251,6 +298,9 @@ const ProfileEdit = () => {
                 label="비밀번호 확인"
                 type="password"
                 name="confirmPassword"
+                onChange={handleChange}
+                error={errors.confirmPassword !== ""}
+                helperText={errors.confirmPassword}
                 InputProps={{
                   style: {
                     borderRadius: "10px",
@@ -269,6 +319,9 @@ const ProfileEdit = () => {
                 type="email"
                 name="email"
                 value={formData.email}
+                onChange={handleChange}
+                error={errors.email !== ""}
+                helperText={errors.email}
                 InputProps={{
                   style: {
                     borderRadius: "10px",
@@ -286,6 +339,7 @@ const ProfileEdit = () => {
                 label="소속 정보"
                 name="belong"
                 value={formData.belong || ""}
+                onChange={handleChange}
                 InputProps={{
                   style: {
                     borderRadius: "10px",

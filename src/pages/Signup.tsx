@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Box, TextField, Button, Grid } from "@mui/material";
-
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import SelectBox from "../components/SelectBox";
 
 const Container = styled.div`
@@ -35,20 +36,67 @@ const Title = styled.h1`
 `;
 
 const Signup: React.FC = () => {
+  const navigate = useNavigate();
+  // const formData = useSelector((state: RootState) => state.profile.formData);
+  // const dispatch = useDispatch();
+
   const [formData, setFormData] = useState({
-    username: "",
+    memberId: "",
     nickname: "",
     password: "",
     confirmPassword: "",
     email: "",
-    affiliation: "",
-    province: "",
-    district: "",
-    town: "",
+    belong: "",
+    region: "",
   });
+
+  const [errors, setErrors] = useState({
+    memberId: "",
+    password: "",
+    confirmPassword: "",
+    email: "",
+  });
+
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors = { ...errors };
+
+    if (!/^[a-zA-z0-9]{4,12}$/.test(formData.memberId)) {
+      newErrors.memberId = "4-12사이 대소문자 또는 숫자만 입력하시오";
+      isValid = false;
+    } else {
+      newErrors.memberId = "";
+    }
+
+    if (!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(formData.password)) {
+      newErrors.password =
+        "최소 8자 이상 적어도 하나의 영문자와 숫자가 포함되어야합니다.";
+      isValid = false;
+    } else {
+      newErrors.password = "";
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = "비밀번호가 일치하지 않습니다.";
+      isValid = false;
+    } else {
+      newErrors.confirmPassword = "";
+    }
+
+    if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+      newErrors.email = "올바른 이메일 형식이 아닙니다.";
+      isValid = false;
+    } else {
+      newErrors.email = "";
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    // dispatch(editProfile({ ...formData, [name]: value }));
     setFormData({
       ...formData,
       [name]: value,
@@ -60,17 +108,52 @@ const Signup: React.FC = () => {
     district: string,
     town: string
   ) => {
+    // dispatch(
+    //   editProfile({
+    //     ...formData,
+    //     region: `${province} ${district} ${town}`,
+    //   })
+    // );
     setFormData({
       ...formData,
-      province,
-      district,
-      town,
+      region: `${province} ${district} ${town}`,
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(formData);
+    if (validateForm()) {
+      try {
+        const response = await axios.post(
+          "https://trailfinder.kro.kr/api/v1/sign-up",
+          {
+            member_id: formData.memberId,
+            password: formData.password,
+            nickname: formData.nickname,
+            e_mail: formData.email,
+            belong: formData.belong,
+            region: formData.region,
+          }
+        );
+        console.log(response.data);
+        alert("회원가입 성공!");
+        // localStorage.setItem("userData", JSON.stringify(response.data));
+        // localStorage.setItem("isLoggedIn", String(true));
+
+        navigate("/");
+      } catch (err) {
+        if (axios.isAxiosError(err)) {
+          console.log(err.response);
+          if (err.response?.status === 400) {
+            alert("이미 존재하는 계정입니다.");
+          } else {
+            console.log("singup error ", err);
+          }
+        }
+      }
+    } else {
+      console.log("validate fail");
+    }
   };
 
   return (
@@ -89,7 +172,7 @@ const Signup: React.FC = () => {
 
               "& .MuiTextField-root": {
                 margin: "0 0 30px 0",
-                height: "50px",
+                // height: "50px",
               },
               "& .MuiButton-root": {
                 height: "70px",
@@ -105,12 +188,14 @@ const Signup: React.FC = () => {
             <form onSubmit={handleSubmit}>
               <TextField
                 label="아이디"
-                name="username"
-                value={formData.username}
+                name="memberId"
+                value={formData.memberId}
                 onChange={handleChange}
                 fullWidth
                 margin="normal"
                 required
+                error={errors.memberId !== ""}
+                helperText={errors.memberId}
               />
               <TextField
                 label="닉네임"
@@ -132,6 +217,8 @@ const Signup: React.FC = () => {
                     fullWidth
                     margin="normal"
                     required
+                    error={errors.password !== ""}
+                    helperText={errors.password}
                   />
                 </Grid>
                 <Grid item xs={6}>
@@ -144,6 +231,8 @@ const Signup: React.FC = () => {
                     fullWidth
                     margin="normal"
                     required
+                    error={errors.confirmPassword !== ""}
+                    helperText={errors.confirmPassword}
                   />
                 </Grid>
               </Grid>
@@ -156,11 +245,13 @@ const Signup: React.FC = () => {
                 fullWidth
                 margin="normal"
                 required
+                error={errors.email !== ""}
+                helperText={errors.email}
               />
               <TextField
                 label="소속 정보"
-                name="affiliation"
-                value={formData.affiliation}
+                name="belong"
+                value={formData.belong}
                 onChange={handleChange}
                 fullWidth
                 margin="normal"
