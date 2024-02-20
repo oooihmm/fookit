@@ -15,6 +15,15 @@ const Posts = styled.div`
     height: 230px;
     background-color: #f8e7c8;
     margin-bottom: 5px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+
+    img {
+      height: 230px;
+    }
   }
 
   #post-title {
@@ -70,7 +79,12 @@ const Post = ({ recipe }: { recipe: Recipe }) => {
   const navigate = useNavigate();
   return (
     <Posts onClick={() => navigate(`/recipes/${recipe.boardId}/detail`)}>
-      <div id='image'></div>
+      <div id='image'>
+        <img
+          src={`/recipes/${recipe.boardId}.jpg`}
+          alt={recipe.title}
+        />
+      </div>
       <span id='post-title'>
         {recipe.title.length < 17
           ? recipe.title

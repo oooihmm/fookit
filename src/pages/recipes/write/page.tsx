@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { FormContainer, TextareaAutosizeElement } from 'react-hook-form-mui';
+import { FormContainer } from 'react-hook-form-mui';
 
 import TitleForm from '../../../components/write/TitleForm';
 import TagForm from '../../../components/write/TagForm';
@@ -18,17 +18,6 @@ const Wrap = styled.div`
     font-weight: bold;
     margin-bottom: 30px;
   }
-`;
-
-const ContentsBody = styled.div`
-  min-width: 1200px;
-  max-width: 1500px;
-  min-height: 700px;
-  padding: 30px;
-
-  background-color: white;
-  border-radius: 20px;
-  gap: 30px;
 `;
 
 const ContentsFooter = styled.div`

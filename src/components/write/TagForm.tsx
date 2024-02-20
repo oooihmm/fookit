@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 
 import { useDropzone } from 'react-dropzone';
+import { useParams } from 'react-router-dom';
 
 const Wrap = styled.div`
   min-width: 1200px;
@@ -81,9 +82,9 @@ const TagsWrap = styled.div`
   }
 `;
 
-const ImageBox = styled.div<{ color?: string }>`
+const ImageBox = styled.div<{ color?: string; image?: boolean }>`
   width: 100%;
-  height: 152px;
+  height: ${(props) => (props.image ? '500px' : '152px')};
   padding: 30px;
   display: flex;
   align-items: center;
@@ -96,6 +97,11 @@ const ImageBox = styled.div<{ color?: string }>`
   outline: none;
   transition: border 0.24s ease-in-out;
   background-color: #eef0ed;
+  overflow-y: hidden;
+
+  img {
+    width: 100%;
+  }
 `;
 
 const Line = styled.hr`
@@ -134,14 +140,13 @@ const TagForm = ({
   chips: string[];
   setChips: React.Dispatch<React.SetStateAction<string[]>>;
   readOnly?: boolean;
-  totalPrice?: string;
-  totalTime?: string;
-  totalKcal?: string;
 }) => {
   const { getRootProps, getInputProps, acceptedFiles, fileRejections } =
     useDropzone({
       multiple: false,
     });
+
+  const { recipeNo } = useParams();
 
   const borderColor = () => {
     if (acceptedFiles.length) {
@@ -268,7 +273,14 @@ const TagForm = ({
         <Line />
         {readOnly ? (
           <>
-            <ImageBox color={borderColor()}></ImageBox>
+            <ImageBox
+              color={borderColor()}
+              image={true}>
+              <img
+                src={`/recipes/${recipeNo}.jpg`}
+                alt={'recipe'}
+              />
+            </ImageBox>
           </>
         ) : (
           <>
