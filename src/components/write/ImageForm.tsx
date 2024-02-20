@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import { TextareaAutosizeElement } from 'react-hook-form-mui';
 import { useDropzone } from 'react-dropzone';
 
 const Wrap = styled.div`
@@ -67,7 +68,7 @@ const ImageBox = styled.div<{ color?: string }>`
   background-color: #eef0ed;
 `;
 
-const ImageForm = () => {
+const ImageForm = ({ readOnly }: { readOnly?: boolean }) => {
   const { getRootProps, getInputProps, acceptedFiles, fileRejections } =
     useDropzone({
       multiple: false,
@@ -94,29 +95,44 @@ const ImageForm = () => {
         <p>
           {fileName}
           {fileRejections.length > 1
-            ? ` 외 ${fileRejections.length - 1} 개`
+            ? ` and ${fileRejections.length - 1} others`
             : ''}
         </p>
       );
     } else {
-      return <p>파일을 드래그하거나 클릭하여 업로드하세요.</p>;
+      return <p>Drag or click to upload your files.</p>;
     }
   };
 
   return (
     <Wrap>
       <PostTags>
-        <TagsWrap>
-          <h3>이미지 첨부</h3>
-        </TagsWrap>
-        <ImageBox
-          color={borderColor()}
-          {...getRootProps({
-            className: 'dropzone',
-          })}>
-          <input {...getInputProps()} />
-          {renderFileInfo()}
-        </ImageBox>
+        {readOnly ? (
+          <>
+            <ImageBox color={borderColor()}></ImageBox>
+          </>
+        ) : (
+          <>
+            <TagsWrap>
+              <h3>Attach images</h3>
+            </TagsWrap>
+            <ImageBox
+              color={borderColor()}
+              {...getRootProps({
+                className: 'dropzone',
+              })}>
+              <input {...getInputProps()} />
+              {renderFileInfo()}
+            </ImageBox>
+          </>
+        )}
+        <TextareaAutosizeElement
+          name='body'
+          resizeStyle='vertical'
+          rows={readOnly ? 3 : 15}
+          sx={{ width: '100%' }}
+          inputProps={{ readOnly: readOnly }}
+        />
       </PostTags>
     </Wrap>
   );

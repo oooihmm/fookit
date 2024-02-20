@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import CommunityTable from '../../components/community/CommunityTable';
+import useCommunity from './hooks';
 
 const Wrap = styled.div`
   min-width: 1200px;
@@ -68,6 +69,8 @@ const ContentsFooter = styled.div`
 
 const CommunityPage = () => {
   const navigate = useNavigate();
+  const { communityData } = useCommunity();
+
   return (
     <Wrap>
       <ContentsWrap>
@@ -75,11 +78,11 @@ const CommunityPage = () => {
           <h1>Community</h1>
         </ContentsHeader>
         <Contents>
-          <CommunityTable />
+          <CommunityTable communityData={communityData} />
         </Contents>
       </ContentsWrap>
       <ContentsFooter>
-        <button onClick={() => navigate('/community/write')}>글쓰기</button>
+        <button onClick={() => navigate('/community/write')}>Write</button>
       </ContentsFooter>
     </Wrap>
   );

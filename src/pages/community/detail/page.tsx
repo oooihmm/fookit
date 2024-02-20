@@ -1,11 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import { FormContainer, TextareaAutosizeElement } from 'react-hook-form-mui';
+import { FormContainer } from 'react-hook-form-mui';
 
 import Title from '../../../components/detail/Title';
 import Comment from '../../../components/detail/Comment';
 import ImageForm from '../../../components/write/ImageForm';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import useCommunity from '../hooks';
 
 const Wrap = styled.div`
   min-width: 1200px;
@@ -32,43 +33,16 @@ const ContentsBody = styled.div`
   gap: 30px;
 `;
 
-const LikeButtonContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  button {
-    width: 180px;
-    height: 50px;
-    color: white;
-    font-size: 18px;
-    background-color: #548536;
-    border-radius: 20px;
-    border: none;
-    font-size: 18px;
-    box-shadow: none;
-    cursor: pointer;
-  }
-`;
-
 const CommentContainer = styled.div`
   width: 100%;
   min-height: 500px;
-  padding-bottom: 60px;
+  margin-bottom: -20px;
 
   h2 {
     font-size: 30px;
-    font-weight: 600;
+    font-weight: 400;
+    margin-bottom: 30px;
   }
-`;
-
-const Line = styled.hr`
-  width: 100%;
-  background: #eef0ed;
-  margin: 60px 0;
-  height: 1px;
-  border: 0;
 `;
 
 const ContentsFooter = styled.div`
@@ -97,47 +71,66 @@ const ContentsFooter = styled.div`
 const CommunityWritePage = () => {
   const navigate = useNavigate();
 
+  const { communityNo } = useParams();
+  const { communityData } = useCommunity();
+  const detailData = communityData.find(
+    (community) => community.boardId === Number(communityNo)
+  );
+
+  const recipeComments = [
+    {
+      reply: false,
+      secret: false,
+      writer: 'Owen Mitchell',
+      body: `Oh, this idea for utilizing surplus things looks fantastic! I'll definitely try it out with my friends this weekend. It's a clever way to make good use of those excess thing. Thanks for sharing!`,
+    },
+    {
+      reply: true,
+      secret: false,
+      writer: 'Sebastian Cole',
+      body: `Absolutely agree! Finding innovative ways to use surplus items is both eco-friendly and resourceful. Let me know how your weekend experiment turns out – always on the lookout for clever ideas like these!`,
+    },
+    {
+      reply: true,
+      secret: false,
+      writer: 'Lily Thompson',
+      body: `Love the creativity in repurposing excess items! It's inspiring to see how people can turn 'leftovers' into something enjoyable. Thanks for sharing, and I'm excited to hear about your experience trying it out with friends. Cheers to resourcefulness!`,
+    },
+    {
+      reply: false,
+      secret: false,
+      writer: 'Caleb Anderson',
+      body: `When there's no one to share your extra things with, looking for connections is a great idea. Following the suggested methods might lead to creating positive connections and reducing food waste. It's also eco-friendly and a wonderful way to help neighbors in need.`,
+    },
+  ];
+
   return (
     <Wrap>
-      <Title />
-      <FormContainer>
-        <ImageForm />
+      <Title
+        title={`${detailData?.title}`}
+        author={detailData?.author}
+        createdAt={detailData?.createdDate}
+        views={detailData?.views}
+      />
+      <FormContainer defaultValues={detailData}>
+        <ImageForm readOnly={true} />
         <ContentsBody>
-          <TextareaAutosizeElement
-            name='body'
-            resizeStyle='vertical'
-            rows={30}
-            sx={{ width: '100%', marginBottom: '60px' }}
-            disabled={true}
-          />
-          <LikeButtonContainer>
-            <button>❤︎ 좋아요 nn개</button>
-          </LikeButtonContainer>
-          <Line />
           <CommentContainer>
-            <h2>댓글</h2>
-            <Comment
-              reply={false}
-              secret={false}
-            />
-            <Comment
-              reply={false}
-              secret={true}
-            />
-            <Comment
-              reply={false}
-              secret={false}
-            />
-            <Comment
-              reply={true}
-              secret={false}
-            />
+            <h2>Comments</h2>
+            {recipeComments.map((comment) => (
+              <Comment
+                reply={comment.reply}
+                secret={comment.secret}
+                writer={comment.writer}
+                body={comment.body}
+              />
+            ))}
           </CommentContainer>
         </ContentsBody>
         <ContentsFooter>
           <ContentsFooter>
-            <button onClick={() => navigate('/community/write')}>글쓰기</button>
-            <button onClick={() => navigate('/community')}>목록으로</button>
+            <button onClick={() => navigate('/community/write')}>Write</button>
+            <button onClick={() => navigate('/community')}>To List</button>
           </ContentsFooter>
         </ContentsFooter>
       </FormContainer>

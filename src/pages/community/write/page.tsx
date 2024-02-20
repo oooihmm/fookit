@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { FormContainer, TextareaAutosizeElement } from 'react-hook-form-mui';
+import { FormContainer } from 'react-hook-form-mui';
 
 import OnlyTitleForm from '../../../components/write/OnlyTitleForm';
 import ImageForm from '../../../components/write/ImageForm';
@@ -18,17 +18,6 @@ const Wrap = styled.div`
     font-weight: bold;
     margin-bottom: 30px;
   }
-`;
-
-const ContentsBody = styled.div`
-  min-width: 1200px;
-  max-width: 1500px;
-  min-height: 700px;
-  padding: 30px;
-
-  background-color: white;
-  border-radius: 20px;
-  gap: 30px;
 `;
 
 const ContentsFooter = styled.div`
@@ -60,20 +49,12 @@ const CommunityWritePage = () => {
 
   return (
     <Wrap>
-      <h1>커뮤니티 글 쓰기</h1>
+      <h1>Write Community</h1>
       <FormContainer onSuccess={onSubmit}>
         <OnlyTitleForm />
         <ImageForm />
-        <ContentsBody>
-          <TextareaAutosizeElement
-            name='body'
-            resizeStyle='vertical'
-            rows={30}
-            sx={{ width: '1200px' }}
-          />
-        </ContentsBody>
         <ContentsFooter>
-          <button type='submit'>등록</button>
+          <button type='submit'>submit</button>
         </ContentsFooter>
       </FormContainer>
     </Wrap>
