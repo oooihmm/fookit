@@ -123,8 +123,8 @@ export const Header = () => {
       <NavMainWrapper>
         <NavTitle onClick={handleTitleClick}>FOOKIT</NavTitle>
         <NavMenu>
-          <MenuItem>Recipe</MenuItem>
-          <MenuItem>Community</MenuItem>
+          <MenuItem onClick={() => navigate("/recipes")}>Recipe</MenuItem>
+          <MenuItem onClick={() => navigate("/community")}>Community</MenuItem>
         </NavMenu>
       </NavMainWrapper>
       <NavIconWrapper>
