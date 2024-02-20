@@ -32,11 +32,6 @@ const ContentsBody = styled.div`
   gap: 30px;
 `;
 
-const BodyContainer = styled.div`
-  width: 100%;
-  min-height: 500px;
-`;
-
 const LikeButtonContainer = styled.div`
   width: 100%;
   display: flex;
@@ -60,6 +55,7 @@ const LikeButtonContainer = styled.div`
 const CommentContainer = styled.div`
   width: 100%;
   min-height: 500px;
+  padding-bottom: 60px;
 
   h2 {
     font-size: 30px;
@@ -105,40 +101,36 @@ const CommunityWritePage = () => {
       <FormContainer disabled={true}>
         <ImageForm />
         <ContentsBody>
-          <ContentsBody>
-            <BodyContainer>
-              <TextareaAutosizeElement
-                name='body'
-                resizeStyle='vertical'
-                rows={30}
-                sx={{ width: '100%', marginBottom: '60px' }}
-                disabled={true}
-              />
-            </BodyContainer>
-            <LikeButtonContainer>
-              <button>❤︎ 좋아요 nn개</button>
-            </LikeButtonContainer>
-            <Line />
-            <CommentContainer>
-              <h2>댓글</h2>
-              <Comment
-                reply={false}
-                secret={false}
-              />
-              <Comment
-                reply={false}
-                secret={true}
-              />
-              <Comment
-                reply={false}
-                secret={false}
-              />
-              <Comment
-                reply={true}
-                secret={false}
-              />
-            </CommentContainer>
-          </ContentsBody>
+          <TextareaAutosizeElement
+            name='body'
+            resizeStyle='vertical'
+            rows={30}
+            sx={{ width: '100%', marginBottom: '60px' }}
+            disabled={true}
+          />
+          <LikeButtonContainer>
+            <button>❤︎ 좋아요 nn개</button>
+          </LikeButtonContainer>
+          <Line />
+          <CommentContainer>
+            <h2>댓글</h2>
+            <Comment
+              reply={false}
+              secret={false}
+            />
+            <Comment
+              reply={false}
+              secret={true}
+            />
+            <Comment
+              reply={false}
+              secret={false}
+            />
+            <Comment
+              reply={true}
+              secret={false}
+            />
+          </CommentContainer>
         </ContentsBody>
         <ContentsFooter>
           <ContentsFooter>

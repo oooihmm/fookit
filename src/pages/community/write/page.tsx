@@ -69,7 +69,7 @@ const CommunityWritePage = () => {
             name='body'
             resizeStyle='vertical'
             rows={30}
-            sx={{ width: '100%' }}
+            sx={{ width: '1200px' }}
           />
         </ContentsBody>
         <ContentsFooter>
