@@ -68,14 +68,14 @@ const Login = () => {
             password: password,
           }
         );
-        console.log(response);
+        // console.log(response.data);
         localStorage.clear();
 
         localStorage.setItem("isLoggedIn", String(true));
         dispatch(login());
 
-        localStorage.setItem("userId", String(loginUserId));
-        dispatch(setUserId(loginUserId));
+        localStorage.setItem("userId", String(response.data));
+        dispatch(setUserId(response.data));
 
         fetchUserData();
 
