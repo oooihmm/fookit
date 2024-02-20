@@ -184,7 +184,7 @@ const SelectBox: React.FC<Props> = ({ onSelectChange, selectedRegion }) => {
     <Grid container spacing={2}>
       <Grid item xs={4}>
         <FormControl fullWidth>
-          <InputLabel htmlFor="province">시도 선택:</InputLabel>
+          <InputLabel htmlFor="province">PROVINCE</InputLabel>
           <Select
             id="province"
             value={selectedProvince ? selectedProvince : ""}
@@ -203,7 +203,7 @@ const SelectBox: React.FC<Props> = ({ onSelectChange, selectedRegion }) => {
       </Grid>
       <Grid item xs={4}>
         <FormControl fullWidth>
-          <InputLabel htmlFor="district">시군구 선택:</InputLabel>
+          <InputLabel htmlFor="district">DISTRICT</InputLabel>
           <Select
             id="district"
             value={selectedDistrict ? selectedDistrict : ""}
@@ -223,7 +223,7 @@ const SelectBox: React.FC<Props> = ({ onSelectChange, selectedRegion }) => {
       </Grid>
       <Grid item xs={4}>
         <FormControl fullWidth>
-          <InputLabel htmlFor="district">시군구 선택:</InputLabel>
+          <InputLabel htmlFor="town">TOWN</InputLabel>
           <Select
             id="town"
             value={selectedTown ? selectedTown : ""}

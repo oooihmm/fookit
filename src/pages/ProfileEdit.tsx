@@ -57,6 +57,7 @@ const StyledNotice = styled.div`
 const RedStyled = styled.div`
   color: #a35739;
   font-size: 25px;
+  padding: 0 10px;
 `;
 
 const ProfileEdit = () => {
@@ -228,16 +229,16 @@ const ProfileEdit = () => {
   return (
     <Container>
       <Wrapper>
-        <Title>회원정보 수정</Title>
+        <Title>Account Edit</Title>
         <Form onSubmit={handleEditSubmit}>
           <Grid container spacing={3}>
             <Grid item xs={3}>
-              <InfoTitle>아이디</InfoTitle>
+              <InfoTitle>ID</InfoTitle>
             </Grid>
             <Grid item xs={9}>
               <TextField
                 fullWidth
-                label="아이디"
+                label="ID"
                 name="memberId"
                 value={formData.memberId}
                 onChange={handleChange}
@@ -252,12 +253,12 @@ const ProfileEdit = () => {
               />
             </Grid>
             <Grid item xs={3}>
-              <InfoTitle>닉네임</InfoTitle>
+              <InfoTitle>USERNAME</InfoTitle>
             </Grid>
             <Grid item xs={9}>
               <TextField
                 fullWidth
-                label="닉네임"
+                label="USERNAME"
                 name="nickname"
                 value={formData.nickname}
                 onChange={handleChange}
@@ -270,12 +271,12 @@ const ProfileEdit = () => {
               />
             </Grid>
             <Grid item xs={3}>
-              <InfoTitle>비밀번호</InfoTitle>
+              <InfoTitle>PASSWORD</InfoTitle>
             </Grid>
             <Grid item xs={9}>
               <TextField
                 fullWidth
-                label="비밀번호"
+                label="PASSWORD"
                 type="password"
                 name="password"
                 onChange={handleChange}
@@ -290,12 +291,12 @@ const ProfileEdit = () => {
               />
             </Grid>
             <Grid item xs={3}>
-              <InfoTitle>비밀번호 확인</InfoTitle>
+              <InfoTitle>PASSWORD AGAIN</InfoTitle>
             </Grid>
             <Grid item xs={9}>
               <TextField
                 fullWidth
-                label="비밀번호 확인"
+                label="PASSWORD AGAIN"
                 type="password"
                 name="confirmPassword"
                 onChange={handleChange}
@@ -310,12 +311,12 @@ const ProfileEdit = () => {
               />
             </Grid>
             <Grid item xs={3}>
-              <InfoTitle>이메일</InfoTitle>
+              <InfoTitle>EMAIL</InfoTitle>
             </Grid>
             <Grid item xs={9}>
               <TextField
                 fullWidth
-                label="이메일"
+                label="EMAIL"
                 type="email"
                 name="email"
                 value={formData.email}
@@ -331,12 +332,12 @@ const ProfileEdit = () => {
               />
             </Grid>
             <Grid item xs={3}>
-              <InfoTitle>소속 정보</InfoTitle>
+              <InfoTitle>AFFILIATION</InfoTitle>
             </Grid>
             <Grid item xs={9}>
               <TextField
                 fullWidth
-                label="소속 정보"
+                label="AFFILIATION"
                 name="belong"
                 value={formData.belong || ""}
                 onChange={handleChange}
@@ -349,7 +350,7 @@ const ProfileEdit = () => {
               />
             </Grid>
             <Grid item xs={3}>
-              <InfoTitle>지역</InfoTitle>
+              <InfoTitle>REGION</InfoTitle>
             </Grid>
             <Grid item xs={9}>
               <SelectBox
@@ -374,15 +375,15 @@ const ProfileEdit = () => {
                 },
               }}
             >
-              수정 완료
+              Save
             </Button>
           </Box>
         </Form>
         <div>
-          <Title>회원 탈퇴</Title>
+          <Title>Delete account</Title>
           <StyledNotice>
-            <RedStyled>탈퇴한 계정은 재사용 및 복구가 불가</RedStyled>하오니
-            신중하게 선택하시기 바랍니다.
+            Once you <RedStyled> delete your account, </RedStyled>there is no
+            going back. Please be certain.
           </StyledNotice>
           <div>
             <Button

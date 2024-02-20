@@ -313,7 +313,7 @@ const Mypage: React.FC = () => {
                 },
               }}
             >
-              회원정보 수정
+              Edit
             </Button>
           </Account>
           <HeaderText>
@@ -325,20 +325,20 @@ const Mypage: React.FC = () => {
                   fontSize: "45px",
                 }}
               />
-              <Text>보유 포인트</Text>
+              <Text>Point</Text>
               <PointText>999,999P</PointText>
             </PointInfo>
           </HeaderText>
         </Header>
         <div>
           <StyledButton isActive={activeBtn === 1} onClick={handlePostClick(1)}>
-            작성글
+            Posts
           </StyledButton>
           <StyledButton isActive={activeBtn === 2} onClick={handlePostClick(2)}>
-            작성댓글
+            Comments
           </StyledButton>
           <StyledButton isActive={activeBtn === 3} onClick={handlePostClick(3)}>
-            좋아요한 글
+            bookmark
           </StyledButton>
         </div>
         <MypagePosts posts={posts} />

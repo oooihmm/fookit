@@ -128,7 +128,7 @@ export const Header = () => {
         </NavMenu>
       </NavMainWrapper>
       <NavIconWrapper>
-        <GuideTooltip title="가이드라인" arrow>
+        <GuideTooltip title="Guideline" arrow>
           <IconButton style={{ padding: "20px" }} onClick={handleGuideClick}>
             <MenuBookIcon
               sx={{

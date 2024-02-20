@@ -131,11 +131,11 @@ const ToolTipMypage: React.FC<ToolTipMypageProps> = ({ isHover }) => {
           <TooltipBtnWrapper>
             <TooltipBtn onClick={handleMypageBtnClick}>
               <Home sx={{ fontSize: 30 }} />
-              <TextMyPage>마이페이지</TextMyPage>
+              <TextMyPage>My page</TextMyPage>
             </TooltipBtn>
             <TooltipBtn onClick={handleLogout}>
               <Logout sx={{ fontSize: 30 }} />
-              <TextMyPage>로그아웃</TextMyPage>
+              <TextMyPage>Log Out</TextMyPage>
             </TooltipBtn>
           </TooltipBtnWrapper>
         </ProfileInfo>

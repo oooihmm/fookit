@@ -41,10 +41,10 @@ const PostList: React.FC<IPostListProps> = ({ posts }) => {
     <PostTable>
       <PostTableHead>
         <tr>
-          <th>제목</th>
-          <th>작성자</th>
-          <th>작성일</th>
-          <th>조회수</th>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Date</th>
+          <th>View</th>
         </tr>
       </PostTableHead>
       <tbody>
