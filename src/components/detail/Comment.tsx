@@ -5,7 +5,7 @@ import detailProfile from '../../assets/icons/detailProfile.png';
 import detailSecret from '../../assets/icons/detailSecret.png';
 
 const CommentWrap = styled.div<{ reply?: boolean }>`
-  width: 80%;
+  width: 100%;
   padding: 60px 30px 0 0;
   padding-left: ${(props) => (props.reply ? '60px' : 0)};
   display: flex;
