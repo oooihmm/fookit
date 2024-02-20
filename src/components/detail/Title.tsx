@@ -12,6 +12,7 @@ const ContentsHeader = styled.div`
   background-color: white;
   border-radius: 20px;
   gap: 30px;
+  margin-bottom: 30px;
 `;
 
 const Title = () => {
