@@ -41,11 +41,7 @@ const CommunityTable = ({ communityData }: { communityData: Community[] }) => {
         <TableHead sx={{ height: '80px' }}>
           <TableRow>
             {tableCells.map((cell, index) => {
-              return (
-                <StyledTableCell align={index ? 'right' : 'left'}>
-                  {cell}
-                </StyledTableCell>
-              );
+              return <StyledTableCell>{cell}</StyledTableCell>;
             })}
           </TableRow>
         </TableHead>
@@ -59,9 +55,9 @@ const CommunityTable = ({ communityData }: { communityData: Community[] }) => {
                 scope='row'>
                 {row.title}
               </StyledTableCell>
-              <StyledTableCell align='right'>{row.author}</StyledTableCell>
-              <StyledTableCell align='right'>{row.createdDate}</StyledTableCell>
-              <StyledTableCell align='right'>{row.views}</StyledTableCell>
+              <StyledTableCell>{row.author}</StyledTableCell>
+              <StyledTableCell>{row.createdDate}</StyledTableCell>
+              <StyledTableCell>{row.views}</StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>
