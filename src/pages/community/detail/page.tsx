@@ -1,10 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import { FormContainer } from 'react-hook-form-mui';
+import { FormContainer, TextareaAutosizeElement } from 'react-hook-form-mui';
 
 import Title from '../../../components/detail/Title';
 import Comment from '../../../components/detail/Comment';
 import ImageForm from '../../../components/write/ImageForm';
+import { useNavigate } from 'react-router-dom';
 
 const Wrap = styled.div`
   min-width: 1200px;
@@ -96,6 +97,8 @@ const ContentsFooter = styled.div`
 `;
 
 const CommunityWritePage = () => {
+  const navigate = useNavigate();
+
   return (
     <Wrap>
       <Title />
@@ -103,7 +106,15 @@ const CommunityWritePage = () => {
         <ImageForm />
         <ContentsBody>
           <ContentsBody>
-            <BodyContainer>본문</BodyContainer>
+            <BodyContainer>
+              <TextareaAutosizeElement
+                name='body'
+                resizeStyle='vertical'
+                rows={30}
+                sx={{ width: '100%', marginBottom: '60px' }}
+                disabled={true}
+              />
+            </BodyContainer>
             <LikeButtonContainer>
               <button>❤︎ 좋아요 nn개</button>
             </LikeButtonContainer>
@@ -130,8 +141,10 @@ const CommunityWritePage = () => {
           </ContentsBody>
         </ContentsBody>
         <ContentsFooter>
-          <button>글쓰기</button>
-          <button>목록으로</button>
+          <ContentsFooter>
+            <button onClick={() => navigate('/community/write')}>글쓰기</button>
+            <button onClick={() => navigate('/community')}>목록으로</button>
+          </ContentsFooter>
         </ContentsFooter>
       </FormContainer>
     </Wrap>
