@@ -65,8 +65,10 @@ const CommentContainer = styled.div`
 
 const Line = styled.hr`
   width: 100%;
-  color: EEF0ED;
+  background: #eef0ed;
   margin: 60px 0;
+  height: 1px;
+  border: 0;
 `;
 
 const ContentsFooter = styled.div`

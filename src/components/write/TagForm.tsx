@@ -100,7 +100,10 @@ const ImageBox = styled.div<{ color?: string }>`
 
 const Line = styled.hr`
   width: 100%;
-  color: EEF0ED;
+  background: #eef0ed;
+  margin: 60px 0;
+  height: 1px;
+  border: 0;
 `;
 
 type ChipListProps = {
