@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Post from '../../components/recipies/Post';
+import { useNavigate } from 'react-router-dom';
 
 const Wrap = styled.div`
   min-width: 1200px;
@@ -66,6 +67,7 @@ const ContentsFooter = styled.div`
 `;
 
 const RecipesPage = () => {
+  const navigate = useNavigate();
   return (
     <Wrap>
       <ContentsWrap>
@@ -84,7 +86,7 @@ const RecipesPage = () => {
         </Contents>
       </ContentsWrap>
       <ContentsFooter>
-        <button>글쓰기</button>
+        <button onClick={() => navigate('/recipes/write')}>글쓰기</button>
       </ContentsFooter>
     </Wrap>
   );
